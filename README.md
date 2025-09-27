@@ -18,8 +18,6 @@ PRG04JOAOAGFRONT/
 ┣ .gitignore
 ┗ README.md
 
-yaml
-Copiar código
 
 > ⚡ Conforme novas funcionalidades forem criadas (ex: `produto/`, `pedido/` etc.), basta adicionar novas pastas dentro de `src/`.
 
