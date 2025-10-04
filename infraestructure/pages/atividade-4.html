@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Áudio + YouTube</title>
+    <style>
+        #youtube-player {
+            width: 640px;
+            height: 360px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Teste Web SandBox</h1>
+    <!-- Áudio -->
+    <audio id="trapAudio" autoplay muted loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    <button id="toggleBtn">🔊 Ativar Som</button>
+
+    <!-- YouTube -->
+    <div id="youtube-player"></div>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+        // Controle do áudio
+        const audio = document.getElementById("trapAudio");
+        const btn = document.getElementById("toggleBtn");
+        audio.volume = 0.2;
+
+        btn.addEventListener("click", () => {
+            if (audio.muted) {
+                audio.muted = false;
+                btn.textContent = "⏸️ Pausar";
+            } else if (audio.paused) {
+                audio.play();
+                btn.textContent = "⏸️ Pausar";
+            } else {
+                audio.pause();
+                btn.textContent = "▶️ Tocar";
+            }
+        });
+
+        // Controle do YouTube
+        const VIDEO_ID = "M7lc1UVf-VE"; 
+        let player;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '360',
+                width: '640',
+                videoId: VIDEO_ID,
+                playerVars: {
+                    loop: 1,
+                    playlist: VIDEO_ID,
+                    controls: 1
+                }
+            });
+        }
+    </script>
+</body>
+</html>
