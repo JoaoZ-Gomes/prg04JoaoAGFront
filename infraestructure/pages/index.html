@@ -1,16 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pagina web</title>
-     <link rel="icon" type="image/jpeg" href="../assets/imagens/favicon.jpeg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PH Team Consultoria — Página Inicial</title>
+  <link rel="icon" type="image/png" href="../assets/imagens/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/infraestructure/assets/css/styles.css">
 </head>
 <body>
-    <h1>Projeto Web</h1>
-   <p>html + css + javascript</p> 
-   <footer>Direitos reservados a João Gomes</footer>
-   <a href="atividade-3.html">atividade-3</a>
-   <a href="atividade-4.html">atividade-4</a>
+  <!-- ===== HEADER ===== -->
+  <header>
+  <div class="container">
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">
+          <img src="/infraestructure/assets/imagens/ph_team.png" alt="Logo PH Team">
+        </div>
+        <div>
+          <div class="titulo">PH Team</div>
+          <div class="subtitulo">Consultoria de Performance</div>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#planos">Planos</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+          <li><a href="#agendar">Agendar Consultoria</a></li>
+          <li><a href="#login">Fazer Login</a></li>
+          <li><a href="#painel">Meu Painel</a></li>
+           <li><a href="atividade-4.html">Atividades</a></li>
+          <li><a class="btn-cta" href="#contato">Quero Começar</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <div class="hero-left">
+      <h1>Transforme seu treino.<br> Alcance sua melhor versão.</h1>
+      <p>Planos personalizados, acompanhamento por profissionais e estratégias com base em resultados — orientação completa para quem quer evoluir de verdade.</p>
+      <div class="actions">
+        <a class="btn-cta" href="#contato">Avaliação Grátis</a>
+        <a href="#servicos" class="btn-secundario">Nossos serviços</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <img src="/infraestructure/assets/imagens/ph2.png" alt="Treino">
+    </div>
+  </section>
+
+  <!-- ===== SERVIÇOS ===== -->
+  <section id="servicos" class="services">
+    <div class="service">
+      <h3>Treino Personalizado</h3>
+      <p>Programas criados para seu perfil, nível e objetivo — força, hipertrofia ou emagrecimento.</p>
+    </div>
+    <div class="service">
+      <h3>Acompanhamento Online</h3>
+      <p>Feedback contínuo, ajustes e monitoramento por profissionais certificados.</p>
+    </div>
+    <div class="service">
+      <h3>Nutrição Estratégica</h3>
+      <p>Orientação alimentar prática que funciona na sua rotina, sem dietas extremas.</p>
+    </div>
+  </section>
+
+  <!-- ===== PLANO DESTAQUE ===== -->
+<aside class="card-hero" id="planos">
+  <div class="plano-info"> 
+    <h3>Plano Mais Procurado</h3>
+    <p class="descricao">Treino + Nutrição + Avaliações quinzenais</p>
+  </div>
+  <div class="stats"></div>
+  <div class="botoes">
+    <a class="btn-cta" href="#contato">Quero esse plano</a>
+    <a href="#planos" class="btn-secundario">Ver outros</a>
+  </div>
+</aside>
+
+  <!-- ===== SOBRE O PROFISSIONAL ===== -->
+  <section id="sobre" class="profissional">
+    <img src="/infraestructure/assets/imagens/ph.jpg" alt="Pedro Henrique">
+    <div>
+      <h3>Pedro Henrique</h3>
+      <p>Pedro Henrique é um profissional em formação na área de Educação Física, comprometido em oferecer treinos eficazes e personalizados. Com uma abordagem focada em desempenho, saúde e bem-estar, ele já conta com uma base de clientes satisfeitos que comprovam a qualidade e os resultados de seu trabalho.</p>
+    </div>
+  </section>
+
+  <!-- ===== CALL TO ACTION ===== -->
+  <div class="callout" id="contato">
+    <div class="left">
+      <h3>Pronto pra começar?</h3>
+      <p>Agende sua avaliação gratuita e descubra o plano ideal pro seu objetivo.</p>
+    </div>
+    <div>
+      <a class="btn-cta" href="#contato">Agendar Avaliação</a>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>Direitos reservados a João Gomes</p>
+  </footer>
 </body>
 </html>
