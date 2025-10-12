@@ -458,6 +458,15 @@ footer {
   padding: 1rem 0;
   font-size: 0.875rem;
   
+} 
+
+.atividades{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 90px;
+  gap: 50px;
 }
 
 
