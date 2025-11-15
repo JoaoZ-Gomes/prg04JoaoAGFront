@@ -609,6 +609,30 @@ footer {
   
 }
 
+.btn-cadastro {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--primary); 
+    border-radius: 10px;
+    background: transparent; 
+    color: var(--primary); 
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.3s;
+    font-size: 1.1rem;
+    
+    margin-bottom: 20px; 
+}
+
+.btn-cadastro:hover {
+    background: var(--primary); 
+    color: white; 
+    transform: translateY(-2px);
+    box-shadow: 0px 5px 15px rgba(198, 40, 40, 0.3);
+}
+
 /* ===== ADMIN PAGE ===== */
 .admin-container {
   max-width: 1000px;
@@ -751,6 +775,145 @@ footer {
   margin-right: auto;
 }
 
+
+/* ========================================================= */
+/* ===== ESTILOS PARA TELA DE CADASTRO (COLUNA ÚNICA) ===== */
+/* ========================================================= */
+
+/* Novo container principal que centraliza o card, substituindo a lógica de duas colunas */
+.main-cadastro-coluna-unica {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    padding: 40px 20px;
+    background: var(--bg-gradient); 
+}
+
+/* Novo estilo de card para a tela de cadastro, com largura ajustada para formulários mais longos */
+.card-cadastro {
+    width: 90%;
+    max-width: 500px; 
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 30px 35px;
+    box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    margin: auto; 
+}
+
+/* Estilo para agrupar campos lado a lado (como Peso e Altura) */
+.form-row {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+.form-row .textfield {
+    flex: 1; /* Distribui o espaço igualmente */
+}
+
+/* Responsividade para telas menores */
+@media only screen and (max-width: 500px) {
+    .form-row {
+        flex-direction: column;
+    }
+}
+
+
+/* --- ESTILOS PARA DROPDOWNS (<select>) --- */
+.textfield select {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 15px;
+    background: var(--bg);
+    color: var(--dark);
+    font-size: 1rem;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05);
+    outline: none;
+    transition: all 0.3s ease;
+ 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 30px; 
+}
+
+.textfield select:focus {
+    box-shadow: 0px 0px 0px 2px var(--primary);
+}
+
+
+/* --- ESTILOS PARA ÁREA DE TEXTO (<textarea>) --- */
+.textfield textarea {
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 15px;
+    background: var(--bg);
+    color: var(--dark);
+    font-size: 1rem;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05);
+    outline: none;
+    transition: all 0.3s ease;
+    resize: vertical; 
+    min-height: 100px;
+}
+
+.textfield textarea:focus {
+    box-shadow: 0px 0px 0px 2px var(--primary);
+}
+
+
+/* --- ESTILOS PARA CHECKBOXES DE DIAS (Botões de Tag) --- */
+
+.dias-disponiveis-container {
+    flex-wrap: wrap; 
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Esconde o checkbox nativo */
+.dias-disponiveis-container input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Estilo do container/label que simula o botão/tag */
+.checkbox-label-dias {
+    display: inline-block;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background: var(--bg); 
+    color: var(--dark);
+    font-weight: 500;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Efeito de hover */
+.checkbox-label-dias:hover {
+    background: #e0e0e0;
+    border-color: #c0c0c0;
+}
+
+.checkbox-label-dias input[type="checkbox"]:checked + span {
+    background-color: var(--primary); 
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(198, 40, 40, 0.3);
+    
+    display: block; 
+    padding: 10px 15px; 
+    margin: -10px -15px; 
+    border-radius: 8px;
+}
 /* ===== RESPONSIVIDADE ===== */
 @media (max-width: 768px) {
   .admin-container {
@@ -780,7 +943,7 @@ footer {
 /* --- RESPONSIVIDADE PARA O LOGIN --- */
 @media only screen and (max-width: 900px) {
     .main-login {
-        flex-direction: column; /* Empilha os elementos em telas menores */
+        flex-direction: column; 
     }
 
     .left-login, .right-login {
@@ -790,9 +953,9 @@ footer {
     }
     
     .left-login {
-        order: 1; /* Coloca o card de login primeiro */
+        order: 1; 
         min-height: 40vh;
-        /* Altera o layout do left-login para que o texto e a imagem caibam */
+       
         flex-direction: row; 
         gap: 20px;
     }

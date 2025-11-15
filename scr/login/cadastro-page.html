@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="../../infrastructure/assets/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Cadastro de Cliente</title>
+</head>
+<body>
+    
+    <div class="main-cadastro-coluna-unica">
+        <div class="card-cadastro">
+            <h1>Cadastre-se</h1>
+            
+            <form id="form-cadastro">
+                
+                <div class="textfield">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" placeholder="Seu Nome" required>
+                </div>
+                
+                <div class="textfield">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" placeholder="email@exemplo.com" required>
+                </div>
+
+                <div class="textfield">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" name="senha" placeholder="Crie uma senha" required>
+                </div>
+
+                <div class="textfield">
+                    <label for="objetivo">Objetivo Principal</label>
+                    <select id="objetivo" name="objetivo" required>
+                        <option value="" disabled selected>Selecione seu objetivo...</option>
+                        <option value="emagrecimento">Emagrecimento</option>
+                        <option value="hipertrofia">Hipertrofia (Ganho de Massa)</option>
+                        <option value="definicao">Definição Muscular</option>
+                        <option value="performance">Aumento de Performance</option>
+                        <option value="saude">Saúde e Bem-Estar</option>
+                    </select>
+                </div>
+
+               <div class="textfield">
+    <label>Dias da Semana Disponíveis para Treino</label>
+    
+    <div class="form-row dias-disponiveis-container" style="flex-wrap: wrap; gap: 10px;">
+        
+        <label class="checkbox-label-dias">
+            <input type="checkbox" name="dias_disponiveis" value="segunda">
+            <span>Seg</span>
+        </label>
+        
+        <label class="checkbox-label-dias">
+            <input type="checkbox" name="dias_disponiveis" value="terca">
+            <span>Ter</span>
+        </label>
+        
+        <label class="checkbox-label-dias">
+            <input type="checkbox" name="dias_disponiveis" value="quarta">
+            <span>Qua</span>
+        </label>
+        
+        <label class="checkbox-label-dias">
+            <input type="checkbox" name="dias_disponiveis" value="quinta">
+            <span>Qui</span>
+        </label>
+        
+        <label class="checkbox-label-dias">
+            <input type="checkbox" name="dias_disponiveis" value="sexta">
+            <span>Sex</span>
+        </label>
+        
+        <label class="checkbox-label-dias">
+            <input type="checkbox" name="dias_disponiveis" value="sabado">
+            <span>Sáb</span>
+        </label>
+        
+        <label class="checkbox-label-dias">
+            <input type="checkbox" name="dias_disponiveis" value="domingo">
+            <span>Dom</span>
+        </label>
+        
+    </div>
+</div>
+                
+                <div class="form-row">
+                    <div class="textfield">
+                        <label for="peso">Peso (em kg)</label>
+                        <input 
+                            type="number" 
+                            id="peso" 
+                            name="peso" 
+                            placeholder="Ex: 75.5" 
+                            step="0.1" 
+                            min="20" 
+                            max="600" 
+                            required
+                        >
+                    </div>
+                    <div class="textfield">
+                        <label for="altura">Altura (em metros)</label>
+                        <input 
+                            type="number" 
+                            id="altura" 
+                            name="altura" 
+                            placeholder="Ex: 1.75" 
+                            step="0.01" 
+                            min="0.50" 
+                            max="3.00" 
+                            required
+                        >
+                    </div>
+                </div>
+                
+                <div class="textfield">
+                    <label for="nascimento">Data de Nascimento</label>
+                    <input 
+                        type="date" 
+                        id="nascimento" 
+                        name="nascimento" 
+                        required
+                        max="2025-11-07"
+                    >
+                </div>
+                
+                <div class="textfield">
+                    <label>Possui alguma condição médica, lesão crônica ou dor limitante?</label>
+                    <div style="display: flex; gap: 20px; margin-top: 5px;">
+                        <label>
+                            <input type="radio" id="condicoes-sim" name="tem_condicoes" value="sim"> Sim
+                        </label>
+                        <label>
+                            <input type="radio" id="condicoes-nao" name="tem_condicoes" value="nao"> Não
+                        </label>
+                    </div>
+                </div>
+
+                <div class="textfield">
+                    <label for="descricao-saude">Descreva sua condição/lesão (se aplicável):</label>
+                    <textarea 
+                        id="descricao-saude" 
+                        name="descricao_saude" 
+                        rows="4" 
+                        placeholder="Ex: Hipertensão, dor na lombar. Se não houver, deixe em branco."></textarea>
+                </div>
+
+
+                <button type="submit" class="btn-login" style="margin-top: 25px;">Finalizar Cadastro</button>
+            </form>
+
+            <div class="miss-password">
+                <a href="login-page.html"><p>Já tem conta? Faça Login</p></a>
+            </div>
+            
+        </div>
+    </div>
+    
+</body>
+</html>
