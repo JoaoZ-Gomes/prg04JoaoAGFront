@@ -1,0 +1,272 @@
+/* ===== MAIN LOGIN ===== */
+.main-login {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #f9f9f9 0%, #f4f4f6 100%);
+}
+
+/* ===== LEFT LOGIN (IMAGEM E TEXTO) ===== */
+.left-login {
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background: #ffffff;
+}
+
+.left-login h1 {
+  color: #33323a;
+  font-size: 2.2rem;
+  line-height: 1.3;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.left-login-image {
+  width: 100%;
+  max-width: 450px;
+  filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.1));
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+/* ===== RIGHT LOGIN (FORMULÁRIO) ===== */
+.right-login {
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f4f6;
+}
+
+/* ===== CARD LOGIN ===== */
+.card-login {
+  width: 90%;
+  max-width: 400px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 30px 35px;
+  box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.card-login h1 {
+  color: #33323a;
+  font-weight: 800;
+  margin: 0;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+/* ===== TEXTFIELD (INPUT) ===== */
+.textfield {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+.textfield label {
+  color: #6b6b73;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.textfield input {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 15px;
+  background: #f4f4f6;
+  color: #33323a;
+  font-size: 1rem;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.textfield input::placeholder {
+  color: #6b6b73;
+  opacity: 0.7;
+}
+
+.textfield input:focus {
+  box-shadow: 0px 0px 0px 2px #c62828;
+}
+
+/* ===== BOTÃO LOGIN ===== */
+.btn-login {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 10px;
+  background: #c62828;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0px 5px 15px rgba(198, 40, 40, 0.3);
+  margin-top: 15px;
+  transition: 0.3s;
+  font-size: 1.1rem;
+}
+
+.btn-login:hover {
+  background: #b71c1c;
+  transform: translateY(-2px);
+}
+
+/* ===== BOTÃO CADASTRO ===== */
+.btn-cadastro {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #c62828;
+  border-radius: 10px;
+  background: transparent;
+  color: #c62828;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: 0.3s;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.btn-cadastro:hover {
+  background: #c62828;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0px 5px 15px rgba(198, 40, 40, 0.3);
+}
+
+/* ===== LINKS ===== */
+.miss-password {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  color: #b71c1c;
+}
+
+.miss-password a {
+  color: #b71c1c;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.miss-password a:hover {
+  text-decoration: underline;
+}
+
+.miss-password p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* ===== BOTÃO ADM ===== */
+.adm-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.btn-adm {
+  background: transparent;
+  color: #6b6b73;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.btn-adm:hover {
+  color: #c62828;
+  border-color: #c62828;
+  background-color: rgba(198, 40, 40, 0.05);
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media only screen and (max-width: 900px) {
+  .main-login {
+    flex-direction: column;
+  }
+
+  .left-login, .right-login {
+    width: 100%;
+    height: auto;
+    padding: 30px 20px;
+  }
+
+  .left-login {
+    order: 1;
+    min-height: 40vh;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .left-login h1 {
+    text-align: left;
+    margin-bottom: 0;
+    font-size: 1.8rem;
+  }
+
+  .left-login-image {
+    max-width: 200px;
+  }
+
+  .right-login {
+    order: 2;
+    min-height: 60vh;
+  }
+
+  .card-login {
+    max-width: 450px;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .left-login {
+    flex-direction: column;
+    text-align: center;
+    min-height: 30vh;
+  }
+
+  .left-login h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+  }
+
+  .card-login {
+    padding: 25px 20px;
+  }
+
+  .card-login h1 {
+    font-size: 1.5rem;
+  }
+}
