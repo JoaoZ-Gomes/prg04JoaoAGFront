@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import ConsultantSidebar from './ConsultantSidebar'
+import './ConsultantLayout.css'
 import './TrainingCreator.css'
 
 // Banco de dados simulado de exercícios
@@ -53,13 +55,17 @@ export default function TrainingCreator() {
   }
 
   return (
-    <div className="creator-container">
-      <div className="creator-header">
-        <h1>Montar Nova Ficha de Treino</h1>
-        <p>Selecione exercícios e personalize as configurações para o cliente.</p>
-      </div>
+    <div className="consultant-page-layout">
+      <ConsultantSidebar />
 
-      <div className="creator-selector-bar">
+      <div className="consultant-main-content">
+        <div className="creator-container">
+          <div className="creator-header">
+            <h1>Montar Nova Ficha de Treino</h1>
+            <p>Selecione exercícios e personalize as configurações para o cliente.</p>
+          </div>
+
+          <div className="creator-selector-bar">
         <label htmlFor="client-select">Atribuir a:</label>
         <select
           id="client-select"
@@ -165,6 +171,9 @@ export default function TrainingCreator() {
               ))}
             </div>
           )}
+        </div>
+          </div>
+
         </div>
       </div>
     </div>
