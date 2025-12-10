@@ -1,0 +1,105 @@
+/* Variáveis de Cor (para consistência) */
+:root {
+  --color-primary: #c62828;
+  --color-secondary: #33323a;
+  --color-text-light: #6b6b73;
+  --color-background: #f4f4f6;
+  --sidebar-width: 250px;
+}
+
+/* -------------------- LAYOUT PRINCIPAL -------------------- */
+.consultant-page-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.consultant-main-content {
+  flex-grow: 1;
+  padding: 40px 20px;
+  max-width: calc(100% - var(--sidebar-width)); /* Garante que o conteúdo não invada o sidebar */
+  margin-left: var(--sidebar-width); /* Empurra o conteúdo para a direita */
+}
+
+/* -------------------- SIDEBAR -------------------- */
+.consultant-sidebar {
+  width: var(--sidebar-width);
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--color-secondary);
+  color: white;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+.sidebar-header {
+  text-align: center;
+  padding: 10px 20px 30px 20px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-primary); /* Cor principal para o título */
+}
+
+.sidebar-header i {
+    margin-right: 5px;
+}
+
+.sidebar-nav {
+  flex-grow: 1;
+  list-style: none;
+  padding: 0;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.nav-link i {
+  margin-right: 15px;
+  font-size: 1.1rem;
+}
+
+.nav-link:hover {
+  background-color: #4a4a52;
+}
+
+.nav-link.active {
+  background-color: var(--color-primary); /* Cor primária para o link ativo */
+  font-weight: 700;
+}
+
+.sidebar-footer {
+    padding-top: 20px;
+    border-top: 1px solid #4a4a52;
+}
+
+.logout-link {
+    font-size: 0.9rem;
+    color: #ffcccc; /* Vermelho claro para o 'Sair' */
+}
+
+/* -------------------- RESPONSIVIDADE (MOBILE) -------------------- */
+@media (max-width: 992px) {
+  /* Em telas menores, o sidebar é oculto ou transformado em um menu móvel */
+  .consultant-sidebar {
+    width: 0;
+    overflow: hidden;
+  }
+
+  .consultant-main-content {
+    max-width: 100%;
+    margin-left: 0;
+    padding: 20px 10px;
+  }
+}

@@ -1,0 +1,146 @@
+/* Styles adapted from the provided HTML/CSS for cadastro form */
+.main-cadastro-coluna-unica {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: linear-gradient(180deg, #f9f9f9 0%, #f4f4f6 100%);
+}
+
+.card-cadastro {
+  width: 90%;
+  max-width: 700px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 30px 35px;
+  box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  margin: auto;
+}
+
+.card-cadastro h1 {
+  margin: 0 0 20px 0;
+  font-size: 1.8rem;
+  color: #33323a;
+}
+
+/* Embelezamento adicional */
+.card-cadastro {
+  background: linear-gradient(180deg, #ffffff 0%, #fffaf9 100%);
+  border-radius: 16px;
+  padding: 36px 40px;
+  box-shadow: 0 20px 50px rgba(16,16,24,0.12);
+  border: 1px solid rgba(198,40,40,0.06);
+}
+
+.card-cadastro h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #c62828;
+  margin-bottom: 18px;
+}
+
+.textfield input, .textfield select, .textfield textarea {
+  background: #fff;
+  border: 1px solid rgba(16,16,24,0.06);
+  padding: 14px 16px;
+  font-size: 1rem;
+}
+
+.textfield input:focus, .textfield select:focus, .textfield textarea:focus {
+  border-color: #c62828;
+  box-shadow: 0 6px 20px rgba(198,40,40,0.08);
+}
+
+.checkbox-label-dias {
+  background: #f7f7f7;
+  border: 1px solid rgba(16,16,24,0.04);
+}
+
+.checkbox-label-dias.checked {
+  background: linear-gradient(90deg,#c62828,#ff6b6b);
+  color: white;
+  border-color: rgba(198,40,40,0.18);
+}
+
+.btn-login {
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 1.05rem;
+}
+
+.miss-password a { color: #6b6b73; }
+
+.card-cadastro .miss-password a { text-decoration: underline; }
+
+.textfield {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.textfield label {
+  color: #6b6b73;
+  font-weight: 500;
+}
+
+.textfield input, .textfield select, .textfield textarea {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 15px;
+  background: #f4f4f6;
+  color: #33323a;
+  font-size: 1rem;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.05);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+
+.form-row .textfield {
+  flex: 1;
+}
+
+.checkbox-label-dias {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+  cursor: pointer;
+}
+
+.checkbox-label-dias input[type="checkbox"] {
+  margin: 0;
+}
+
+.btn-login {
+  width: 100%;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 10px;
+  background: #c62828;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0px 5px 15px rgba(198, 40, 40, 0.3);
+  transition: 0.3s;
+}
+
+.btn-login:hover { background: #b71c1c; transform: translateY(-2px); }
+
+@media (max-width: 900px) {
+  .form-row { flex-direction: column; }
+  .card-cadastro { padding: 20px; }
+}
