@@ -20,23 +20,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="footer-section">
-          <h3>Blog</h3>
-          <ul className="footer-list">
-            <li><a href="#" className="footer-link">Tech</a></li>
-            <li><a href="#" className="footer-link">Adventures</a></li>
-            <li><a href="#" className="footer-link">Developer</a></li>
-          </ul>
-        </div>
+    
 
-        <div className="footer-section">
-          <h3>Produtos</h3>
-          <ul className="footer-list">
-            <li><a href="#" className="footer-link">App</a></li>
-            <li><a href="#" className="footer-link">Desktop</a></li>
-            <li><a href="#" className="footer-link">Cloud</a></li>
-          </ul>
-        </div>
 
         <div id="footer-subscribe">
           <h3>Subscrição</h3>
