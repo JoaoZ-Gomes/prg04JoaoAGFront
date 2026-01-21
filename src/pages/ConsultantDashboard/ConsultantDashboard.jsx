@@ -14,6 +14,8 @@ export default function ConsultantDashboard() {
   const [selectedClient, setSelectedClient] = useState(null)
   const [newPeso, setNewPeso] = useState('')
   const [newAltura, setNewAltura] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   // -------------------- BUSCA NO BACKEND --------------------
  useEffect(() => {
@@ -54,8 +56,8 @@ export default function ConsultantDashboard() {
   // -------------------- FUNÇÕES PARA MODAL --------------------
   const openEditModal = (client) => {
     setSelectedClient(client)
-    setNewPeso(client.pesoAtual)
-    setNewAltura(client.altura)
+    setNewPeso(client.pesoAtual || '')
+    setNewAltura(client.altura || '')
     setShowModal(true)
   }
 
@@ -70,6 +72,17 @@ export default function ConsultantDashboard() {
     if (!selectedClient) return
 
     const token = localStorage.getItem('jwt_token')
+    if (!token) {
+      setErrorMessage('Token de autenticação não encontrado. Faça login novamente.')
+      setTimeout(() => setErrorMessage(''), 5000)
+      navigate('/login')
+      return
+    }
+
+    console.log('Token usado na atualização:', token)
+    console.log('ID do cliente:', selectedClient.id)
+    console.log('Dados enviados:', { pesoAtual: parseFloat(newPeso), altura: parseFloat(newAltura) })
+
     try {
       const response = await fetch(`http://localhost:8080/api/clientes/${selectedClient.id}`, {
         method: 'PUT',
@@ -83,17 +96,24 @@ export default function ConsultantDashboard() {
         })
       })
 
+      console.log('Status da resposta:', response.status)
+      console.log('Headers da resposta:', response.headers)
+
       if (!response.ok) {
-        throw new Error('Erro ao atualizar cliente')
+        const errorText = await response.text()
+        console.log('Corpo do erro:', errorText)
+        throw new Error(`Erro ${response.status}: ${errorText}`)
       }
 
       // Atualizar a lista de clientes localmente
       setClients(clients.map(c => c.id === selectedClient.id ? { ...c, pesoAtual: parseFloat(newPeso), altura: parseFloat(newAltura) } : c))
       closeModal()
-      alert('Cliente atualizado com sucesso!')
+      setSuccessMessage('Cliente atualizado com sucesso!')
+      setTimeout(() => setSuccessMessage(''), 5000) // Limpar após 5 segundos
     } catch (error) {
       console.error('Erro ao atualizar:', error)
-      alert('Erro ao atualizar cliente.')
+      setErrorMessage(`Erro ao atualizar cliente: ${error.message}`)
+      setTimeout(() => setErrorMessage(''), 5000) // Limpar após 5 segundos
     }
   }
 
@@ -114,6 +134,20 @@ export default function ConsultantDashboard() {
             <h1>Bem-vindo(a), Consultor(a)!</h1>
             <p>Visão geral e gerenciamento dos seus clientes.</p>
           </div>
+
+          {successMessage && (
+            <div className="message success-message">
+              <i className="fas fa-check-circle"></i>
+              {successMessage}
+            </div>
+          )}
+
+          {errorMessage && (
+            <div className="message error-message">
+              <i className="fas fa-exclamation-triangle"></i>
+              {errorMessage}
+            </div>
+          )}
 
           {/* -------------------- MÉTRICAS -------------------- */}
           <div className="metrics-summary">

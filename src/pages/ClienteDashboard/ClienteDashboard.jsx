@@ -18,7 +18,8 @@ export default function ClienteDashboard() {
     const [clienteNome, setClienteNome] = useState('Cliente');
     const [loading, setLoading] = useState(true);
     const [perfilData, setPerfilData] = useState(null); // Dados do perfil do cliente da API
-    const [error, setError] = useState(null); // Para exibir erros de carregamento
+    const [errorMessage, setErrorMessage] = useState(null); // Para exibir erros
+    const [successMessage, setSuccessMessage] = useState(null); // Para exibir sucessos
 
     useEffect(() => {
         const token = localStorage.getItem('jwt_token');
@@ -26,10 +27,10 @@ export default function ClienteDashboard() {
 
         // 1. Verificação de Autenticação e Autorização (Temporária, será melhorada com AuthContext)
         if (!token || role !== 'Cliente') {
-            alert('Acesso não autorizado. Faça login como Cliente.');
+            setErrorMessage('Acesso não autorizado. Faça login como Cliente.');
             localStorage.removeItem('jwt_token');
             localStorage.removeItem('user_role');
-            navigate('/login');
+            setTimeout(() => navigate('/login'), 3000); // Delay para mostrar mensagem
             return;
         }
 
@@ -51,17 +52,17 @@ export default function ClienteDashboard() {
                     setClienteNome(data.nome ? data.nome.split(' ')[0] : 'Cliente'); 
                 } else if (response.status === 401 || response.status === 403) {
                     // Token inválido, expirado ou usuário sem permissão
-                    alert('Sessão expirada ou acesso negado. Faça login novamente.');
+                    setErrorMessage('Sessão expirada ou acesso negado. Faça login novamente.');
                     localStorage.removeItem('jwt_token');
                     localStorage.removeItem('user_role');
-                    navigate('/login');
+                    setTimeout(() => navigate('/login'), 3000);
                 } else {
                     const errorDetails = await response.json().catch(() => ({ message: 'Erro desconhecido' }));
-                    setError(`Erro ao carregar perfil: ${errorDetails.message || response.statusText}`);
+                    setErrorMessage(`Erro ao carregar perfil: ${errorDetails.message || response.statusText}`);
                     console.error('Erro ao carregar perfil:', response.status, errorDetails);
                 }
             } catch (err) {
-                setError('Erro de conexão com o servidor. Tente novamente mais tarde.');
+                setErrorMessage('Erro de conexão com o servidor. Tente novamente mais tarde.');
                 console.error('Erro de rede:', err);
             } finally {
                 setLoading(false);
@@ -76,13 +77,16 @@ export default function ClienteDashboard() {
         return <div className="loading-screen">Carregando Dashboard...</div>;
     }
 
-    if (error) {
+    if (errorMessage) {
         return (
             <div className="client-page-layout">
                 <ClientSidebar />
                 <div className="client-main-content">
                     <div className="dashboard-container">
-                        <p className="error-message-dashboard">❌ {error}</p>
+                        <div className="message error-message">
+                            <i className="fas fa-exclamation-triangle"></i>
+                            {errorMessage}
+                        </div>
                         <button className="btn-primary" onClick={() => window.location.reload()}>Recarregar</button>
                     </div>
                 </div>
@@ -100,6 +104,20 @@ export default function ClienteDashboard() {
                         <h1>👋 Bem-vindo(a) de volta, {clienteNome}!</h1>
                         <p>Aqui você acompanha seu progresso, planos e interage com seu consultor.</p>
                     </div>
+
+                    {successMessage && (
+                        <div className="message success-message">
+                            <i className="fas fa-check-circle"></i>
+                            {successMessage}
+                        </div>
+                    )}
+
+                    {errorMessage && (
+                        <div className="message error-message">
+                            <i className="fas fa-exclamation-triangle"></i>
+                            {errorMessage}
+                        </div>
+                    )}
 
                     {/* -------------------- MÉTRICAS RÁPIDAS DO CLIENTE -------------------- */}
                     <div className="metrics-summary">

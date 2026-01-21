@@ -101,7 +101,7 @@ export default function Login() {
                     <h1>Login</h1>
 
                     {/* Exibição da mensagem de erro */}
-                    {error && <p className="error-message" style={{color: '#c62828', marginBottom: '15px'}}>{error}</p>}
+                    {error && <div className="error-message"><i className="fas fa-exclamation-triangle"></i>{error}</div>}
 
                     <div className="textfield">
                         <label htmlFor="email">Email</label>
