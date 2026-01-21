@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import './ClientSidebar.css'; // CSS específico para a sidebar do cliente
+import '../layouts/ClientLayout/ClientLayout.css'
 
 /**
  * Sidebar de navegação para a Dashboard do Cliente.

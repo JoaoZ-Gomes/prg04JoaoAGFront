@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
-import ConsultantSidebar from './ConsultantSidebar'
-import './ConsultantLayout.css'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import ConsultantSidebar from '../../components/sidebars/ConsultantSidebar'
+import '../../components/layouts/ConsultantLayout/ConsultantLayout.css'
 import './TrainingCreator.css'
 
 // Banco de dados simulado de exercícios
@@ -14,8 +15,15 @@ const availableExercises = [
 ]
 
 export default function TrainingCreator() {
+  const location = useLocation()
   const [selectedClient, setSelectedClient] = useState('Cliente Não Selecionado')
   const [workoutRoutine, setWorkoutRoutine] = useState([]) // Ficha de treino sendo montada
+
+  useEffect(() => {
+    if (location.state && location.state.clientId) {
+      setSelectedClient(location.state.clientName || `Cliente ID: ${location.state.clientId}`)
+    }
+  }, [location.state])
 
   const handleAddExercise = (exercise) => {
     // Adiciona o exercício com configurações padrão (pode ser ajustado depois)

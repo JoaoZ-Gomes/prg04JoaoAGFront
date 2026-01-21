@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import './ConsultantLayout.css'
+import '../layouts/ConsultantLayout/ConsultantLayout.css'
 
 export default function ConsultantSidebar() {
   const navItems = [

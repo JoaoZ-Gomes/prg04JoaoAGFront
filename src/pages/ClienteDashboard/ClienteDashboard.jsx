@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ClientSidebar from '../../components/ClientSidebar'; // NOVO: Sidebar específica para o cliente
-import './ClientLayout.css'; // NOVO: Para o layout com sidebar
-import './ClienteDashboard.css'; // O CSS da dashboard do cliente
+import ClientSidebar from '../../components/sidebars/ClientSidebar'
+import '../../components/layouts/ClientLayout/ClientLayout.css'
+import './ClienteDashboard.css'
 
 // URL de uma rota protegida de cliente para buscar dados.
 // EX: Uma API que retorna os dados do cliente logado.
