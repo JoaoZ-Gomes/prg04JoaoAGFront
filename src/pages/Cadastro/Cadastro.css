@@ -5,7 +5,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px;
+  padding: 20px;
   background: linear-gradient(180deg, #f9f9f9 0%, #f4f4f6 100%);
 }
 
@@ -14,7 +14,7 @@
   max-width: 700px;
   background: #ffffff;
   border-radius: 14px;
-  padding: 30px 35px;
+  padding: 20px;
   box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.05);
   margin: auto;
@@ -22,22 +22,21 @@
 
 .card-cadastro h1 {
   margin: 0 0 20px 0;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: #33323a;
+  text-align: center;
 }
 
 /* Embelezamento adicional */
 .card-cadastro {
   background: linear-gradient(180deg, #ffffff 0%, #fffaf9 100%);
   border-radius: 16px;
-  padding: 36px 40px;
   box-shadow: 0 20px 50px rgba(16,16,24,0.12);
   border: 1px solid rgba(198,40,40,0.06);
 }
 
 .card-cadastro h1 {
-  text-align: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: #c62828;
   margin-bottom: 18px;
 }
@@ -103,11 +102,8 @@
 
 .form-row {
   display: flex;
+  flex-direction: column;
   gap: 15px;
-}
-
-.form-row .textfield {
-  flex: 1;
 }
 
 .checkbox-label-dias {
@@ -140,7 +136,20 @@
 
 .btn-login:hover { background: #b71c1c; transform: translateY(-2px); }
 
-@media (max-width: 900px) {
-  .form-row { flex-direction: column; }
-  .card-cadastro { padding: 20px; }
+@media (min-width: 768px) {
+  .main-cadastro-coluna-unica {
+    padding: 40px 20px;
+  }
+
+  .card-cadastro {
+    padding: 36px 40px;
+  }
+
+  .card-cadastro h1 {
+    font-size: 2rem;
+  }
+
+  .form-row {
+    flex-direction: row;
+  }
 }

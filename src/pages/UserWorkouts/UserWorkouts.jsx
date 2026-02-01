@@ -1,141 +1,233 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import ClientSidebar from '../../components/sidebars/ClientSidebar'
+import * as fichaService from '../../services/fichaService'
+import * as rotinaService from '../../services/rotinaService'
+import * as clienteService from '../../services/clienteService'
+import '../../components/layouts/ClientLayout/ClientLayout.css'
 import './UserWorkouts.css'
 
-// Dados simulados da ficha de treino atual do usuário
-const currentWorkoutPlan = {
-  clientName: "João Gomes",
-  planName: "Foco em Hipertrofia - Ciclo 1",
-  startDate: "20/11/2025",
-  endDate: "20/12/2025",
-  workouts: [
-    { day: 'A', name: 'Peito, Ombro e Tríceps', exercises: [
-      { id: 101, name: 'Supino Reto c/ Barra', sets: 4, reps: '8-10', rest: '90s', notes: 'Carga média/alta', completed: false },
-      { id: 102, name: 'Desenvolvimento Militar', sets: 3, reps: '10-12', rest: '60s', notes: '', completed: false },
-      { id: 103, name: 'Crossover (Cabo Alto)', sets: 3, reps: '12-15', rest: '45s', notes: 'Foco no pico de contração', completed: false },
-      { id: 104, name: 'Tríceps Testa', sets: 4, reps: '10', rest: '60s', notes: 'Controlar a descida', completed: false },
-    ]},
-    { day: 'B', name: 'Costas e Bíceps', exercises: [
-      { id: 201, name: 'Puxada Alta (Pegada Pronada)', sets: 4, reps: '8-10', rest: '90s', notes: 'Amplitude total', completed: false },
-      { id: 202, name: 'Remada Curvada (Halteres)', sets: 3, reps: '10', rest: '60s', notes: 'Movimento explosivo na subida', completed: false },
-      { id: 203, name: 'Rosca Alternada', sets: 3, reps: '12', rest: '45s', notes: 'Foco na isometria no topo', completed: false },
-    ]},
-    { day: 'C', name: 'Pernas e Abdominais', exercises: [
-      { id: 301, name: 'Agachamento Livre', sets: 4, reps: '8', rest: '120s', notes: 'Priorizar profundidade', completed: false },
-      { id: 302, name: 'Extensora', sets: 3, reps: '15', rest: '45s', notes: 'Drop set na última série', completed: false },
-    ]},
-  ]
-}
-
 export default function UserWorkouts() {
-  // Estado para controlar qual treino (A, B, C) está sendo visualizado
-  const [selectedDay, setSelectedDay] = useState(currentWorkoutPlan.workouts[0].day)
-  
-  // Estado para simular o progresso (marcação de concluído)
-  const [currentPlan, setCurrentPlan] = useState(currentWorkoutPlan)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [fichas, setFichas] = useState([])
+  const [selectedFichaId, setSelectedFichaId] = useState(null)
+  const [rotinas, setRotinas] = useState([])
+  const [clienteInfo, setClienteInfo] = useState({})
+  const [diaSeleccionado, setDiaSeleccionado] = useState(null)
 
-  const selectedWorkout = currentPlan.workouts.find(w => w.day === selectedDay)
+  // Carregar dados do cliente e fichas
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        // Buscar informações do cliente
+        const cliente = await clienteService.buscarMeuPerfil()
+        setClienteInfo(cliente)
 
-  const handleToggleCompletion = (exerciseId) => {
-    setCurrentPlan(prevPlan => {
-      const updatedWorkouts = prevPlan.workouts.map(workout => {
-        if (workout.day === selectedDay) {
-          const updatedExercises = workout.exercises.map(ex => 
-            ex.id === exerciseId ? { ...ex, completed: !ex.completed } : ex
-          )
-          return { ...workout, exercises: updatedExercises }
+        // Buscar fichas do cliente
+        const allFichas = await fichaService.buscarTodasFichasSemPaginacao()
+        // Filtrar apenas fichas do cliente logado
+        const fichasDoCliente = allFichas.filter(f => f.clienteId === cliente.id)
+        setFichas(fichasDoCliente)
+
+        if (fichasDoCliente.length > 0) {
+          setSelectedFichaId(fichasDoCliente[0].id)
         }
-        return workout
-      })
-      return { ...prevPlan, workouts: updatedWorkouts }
-    })
+
+        setLoading(false)
+      } catch (err) {
+        console.error('Erro ao carregar fichas:', err)
+        setError('Erro ao carregar fichas de treino')
+        setLoading(false)
+      }
+    }
+
+    loadData()
+  }, [])
+
+  // Carregar rotinas quando uma ficha é selecionada
+  useEffect(() => {
+    const loadRotinas = async () => {
+      if (!selectedFichaId) return
+
+      try {
+        const rotinasDaFicha = await rotinaService.buscarRotinasPorFicha(selectedFichaId)
+        setRotinas(rotinasDaFicha || [])
+        
+        // Definir primeira dia como selecionada
+        if (rotinasDaFicha && rotinasDaFicha.length > 0) {
+          const dias = [...new Set(rotinasDaFicha.map(r => r.dia).filter(Boolean))]
+          if (dias.length > 0) {
+            setDiaSeleccionado(dias[0])
+          }
+        }
+      } catch (err) {
+        console.error('Erro ao carregar rotinas:', err)
+        setError('Erro ao carregar rotinas')
+      }
+    }
+
+    loadRotinas()
+  }, [selectedFichaId])
+
+  const selectedFicha = fichas.find(f => f.id === selectedFichaId)
+
+  if (loading) {
+    return (
+      <div className="client-page-layout">
+        <ClientSidebar />
+        <div className="client-main-content">
+          <div className="user-workouts-container">
+            <h1>📋 Meus Treinos</h1>
+            <p>Carregando fichas de treino...</p>
+          </div>
+        </div>
+      </div>
+    )
   }
-  
-  // Calcula o progresso do treino atual
-  const totalExercises = selectedWorkout.exercises.length
-  const completedExercises = selectedWorkout.exercises.filter(ex => ex.completed).length
-  const progressPercentage = totalExercises > 0 ? Math.round((completedExercises / totalExercises) * 100) : 0
-  
-  const completionMessage = progressPercentage === 100 ? '✅ Treino Concluído! Excelente trabalho!' : `Progresso: ${progressPercentage}%`
+
+  if (error) {
+    return (
+      <div className="client-page-layout">
+        <ClientSidebar />
+        <div className="client-main-content">
+          <div className="user-workouts-container">
+            <h1>📋 Meus Treinos</h1>
+            <p style={{color: 'red'}}>{error}</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (fichas.length === 0) {
+    return (
+      <div className="client-page-layout">
+        <ClientSidebar />
+        <div className="client-main-content">
+          <div className="user-workouts-container">
+            <h1>📋 Meus Treinos</h1>
+            <p>Nenhuma ficha de treino atribuída. Entre em contato com seu consultor.</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Agrupar rotinas por dia
+  const rotinasPorDia = {}
+  rotinas.forEach(rotina => {
+    const dia = rotina.dia || 'Geral'
+    if (!rotinasPorDia[dia]) {
+      rotinasPorDia[dia] = []
+    }
+    rotinasPorDia[dia].push(rotina)
+  })
+
+  const dias = Object.keys(rotinasPorDia).sort()
+  const primeroDia = dias[0] || 'Geral'
+  const diaAtual = diaSeleccionado || primeroDia
+  const rotinasDelDia = rotinasPorDia[diaAtual] || []
 
   return (
-    <div className="user-workouts-container">
-      <div className="workout-page-header">
-        <h1>Minha Ficha de Treino Atual</h1>
-        <p className="plan-name">{currentPlan.planName} | Vigência: {currentPlan.startDate} a {currentPlan.endDate}</p>
-      </div>
+    <div className="client-page-layout">
+      <ClientSidebar />
+      <div className="client-main-content">
+        <div className="user-workouts-container">
+          <div className="workout-page-header">
+            <h1>Minha Ficha de Treino</h1>
+            {selectedFicha && (
+              <p className="plan-name">
+                {selectedFicha.nome} | Cliente: {clienteInfo.nome}
+                {selectedFicha.dataInicio && selectedFicha.dataFim && (
+                  <span> | Vigência: {new Date(selectedFicha.dataInicio).toLocaleDateString('pt-BR')} a {new Date(selectedFicha.dataFim).toLocaleDateString('pt-BR')}</span>
+                )}
+              </p>
+            )}
+          </div>
 
-      <div className="workout-content-grid">
-        
-        {/* Coluna 1: Navegação/Seleção do Dia */}
-        <div className="day-selector-card">
-            <h2>Selecione o Dia:</h2>
-            <div className="day-buttons">
-                {currentPlan.workouts.map(workout => (
-                    <button
-                        key={workout.day}
-                        className={`day-btn ${selectedDay === workout.day ? 'active-day' : ''}`}
-                        onClick={() => setSelectedDay(workout.day)}
-                    >
-                        Dia {workout.day} - {workout.name}
-                    </button>
+          {fichas.length > 1 && (
+            <div className="ficha-selector-card">
+              <label>Selecionar Ficha:</label>
+              <select 
+                value={selectedFichaId} 
+                onChange={(e) => setSelectedFichaId(Number(e.target.value))}
+                className="ficha-select"
+              >
+                {fichas.map(f => (
+                  <option key={f.id} value={f.id}>{f.nome}</option>
                 ))}
+              </select>
             </div>
+          )}
+
+          <div className="workout-content-grid">
             
-            <div className="quick-info">
-                <i className="fas fa-calendar-check icon-red"></i>
-                <p>Lembre-se de registrar cada treino!</p>
-            </div>
-        </div>
-
-        {/* Coluna 2: Detalhes do Treino Selecionado */}
-        <div className="workout-details-card">
-          <div className="workout-progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${progressPercentage}%` }}
-              title={completionMessage}
-            ></div>
-            <span className="progress-text">{completionMessage}</span>
-          </div>
-          
-          <h2>Treino {selectedWorkout.day}: {selectedWorkout.name}</h2>
-          
-          <div className="exercises-list">
-            {selectedWorkout.exercises.map((exercise, index) => (
-              <div key={exercise.id} className={`exercise-item ${exercise.completed ? 'completed' : ''}`}>
-                <div className="exercise-info">
-                  <span className="index">{index + 1}.</span>
-                  <div className="details">
-                    <span className="name">{exercise.name}</span>
-                    <span className="specs">
-                      {exercise.sets} Séries de {exercise.reps} | Descanso: {exercise.rest}
-                    </span>
-                    {exercise.notes && <p className="notes"><i className="fas fa-sticky-note"></i> {exercise.notes}</p>}
-                  </div>
-                </div>
-                
-                <button 
-                  className="toggle-btn"
-                  onClick={() => handleToggleCompletion(exercise.id)}
-                  title={exercise.completed ? "Desmarcar" : "Marcar como concluído"}
-                >
-                  <i className={`fas ${exercise.completed ? 'fa-check-square' : 'fa-square'}`}></i>
-                </button>
+            {/* Coluna 1: Seleção de Dias */}
+            <div className="day-selector-card">
+              <h2>Selecione o Dia:</h2>
+              <div className="day-buttons">
+                {dias.length > 0 ? (
+                  dias.map(dia => (
+                    <button
+                      key={dia}
+                      className={`day-btn ${diaAtual === dia ? 'active-day' : ''}`}
+                      onClick={() => setDiaSeleccionado(dia)}
+                    >
+                      Dia {dia}
+                    </button>
+                  ))
+                ) : (
+                  <p>Nenhuma rotina adicionada</p>
+                )}
               </div>
-            ))}
-          </div>
+              
+              <div className="quick-info">
+                <i className="fas fa-calendar-check icon-red"></i>
+                <p>Acompanhe seus treinos!</p>
+              </div>
+            </div>
 
-          <button className="btn-primary finish-btn">
-            Finalizar Treino e Enviar
-          </button>
+            {/* Coluna 2: Exercícios do Dia */}
+            <div className="workout-details-card">
+              <h2>Dia {diaAtual}: Exercícios</h2>
+              
+              {rotinasDelDia.length > 0 ? (
+                <div className="exercises-list">
+                  {rotinasDelDia.map((rotina, index) => (
+                    <div key={rotina.id || index} className="exercise-item">
+                      <div className="exercise-info">
+                        <span className="index">{index + 1}.</span>
+                                <div className="details">
+                                  <span className="name">{rotina.nomeExercicio || rotina.nome || 'Exercício'}</span>
+                                  <span className="specs">
+                                    {rotina.series || '-'} séries × {rotina.repeticoes || '-'} reps | Descanso: {rotina.descanso || '-'}
+                                  </span>
+                                  <div className="exercise-extra-meta">
+                                    {rotina.equipamento && <span className="meta-item">Equip: {rotina.equipamento}</span>}
+                                    {rotina.urlVideo && (
+                                      <a className="meta-item video-link" href={rotina.urlVideo} target="_blank" rel="noreferrer">Vídeo</a>
+                                    )}
+                                  </div>
+                                  {rotina.notas && (
+                                    <p className="notes">
+                                      <i className="fas fa-sticky-note"></i> {rotina.notas}
+                                    </p>
+                                  )}
+                                </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>Nenhum exercício neste dia</p>
+              )}
+
+              <button className="btn-primary finish-btn" disabled>
+                Treino Carregado do Sistema
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-      
-      {/* Opções adicionais (link para histórico) */}
-      <div className="action-footer">
-        <a href="#" className="footer-link-action">
-            <i className="fas fa-history"></i> Ver Histórico Completo de Treinos
-        </a>
       </div>
     </div>
   )

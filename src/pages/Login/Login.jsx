@@ -1,9 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import * as authService from '../../services/authService'
 import './Login.css'
-
-// Endpoint de Autenticação configurado no seu Spring Security
-const LOGIN_API_URL = 'http://localhost:8080/api/auth/login';
 
 /**
  * Componente da tela de Login.
@@ -12,15 +10,14 @@ const LOGIN_API_URL = 'http://localhost:8080/api/auth/login';
 export default function Login() {
     const navigate = useNavigate()
     
-    // RENOMEADO: 'usuario' para 'email' para alinhar com o DTO do Backend
     const [email, setEmail] = useState('') 
     const [senha, setSenha] = useState('')
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null) // Para exibir erros da API
+    const [error, setError] = useState(null)
 
     /**
      * Função assíncrona para realizar o Login e obter o JWT.
-     * Alinhada com o LoginRequestDTO {email, senha} do Backend.
+     * Utiliza o serviço de autenticação.
      */
     const fazerLogin = async () => {
         setError(null);
@@ -31,48 +28,29 @@ export default function Login() {
         }
 
         setLoading(true);
-        
-        // Payload alinhado com o LoginRequestDTO
-        const credentials = { email, senha };
 
         try {
-            const response = await fetch(LOGIN_API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(credentials),
-            });
-
-            if (response.ok) {
-                // Sucesso: Recebe o JWT e os dados do usuário (LoginResponseDTO)
-                const data = await response.json(); 
-                
-                // 1. ARMAZENAMENTO DO TOKEN E ROLE NO LOCAL STORAGE
-                localStorage.setItem('jwt_token', data.token);
-                localStorage.setItem('user_role', data.tipoUsuario); // Ex: Cliente ou Consultor
-
-                // 2. REDIRECIONAMENTO BASEADO NA ROLE
-                if (data.tipoUsuario === 'Consultor') {
-                    navigate('/consultor/dashboard');
-                } else if (data.tipoUsuario === 'Cliente') {
-                    navigate('/cliente/dashboard');
-                } else {
-                    // Fallback para roles não mapeadas
-                    navigate('/'); 
-                }
-
-            } else if (response.status === 401) {
-                // Credenciais Inválidas (Spring Security / AuthenticationManager falhou)
-                setError('Credenciais inválidas. Verifique seu email e senha.');
+            const response = await authService.login(email, senha);
+            
+            // Redirecionamento baseado na role
+            if (response.tipoUsuario === 'Consultor') {
+                navigate('/consultor/dashboard');
+            } else if (response.tipoUsuario === 'Cliente') {
+                navigate('/cliente/dashboard');
             } else {
-                // Outros erros da API
-                setError('Erro ao efetuar login. Tente novamente mais tarde.');
+                // Fallback para roles não mapeadas
+                navigate('/'); 
             }
 
         } catch (err) {
-            console.error('Erro de rede/API:', err);
-            setError('Não foi possível conectar ao servidor de autenticação.');
+            console.error('Erro ao fazer login:', err);
+            
+            // Tratamento de erros
+            if (err.message && err.message.includes('401')) {
+                setError('Credenciais inválidas. Verifique seu email e senha.');
+            } else {
+                setError('Não foi possível conectar ao servidor de autenticação.');
+            }
         } finally {
             setLoading(false);
         }

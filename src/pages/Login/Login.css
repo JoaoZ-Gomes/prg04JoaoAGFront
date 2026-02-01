@@ -3,6 +3,7 @@
   width: 100vw;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background: linear-gradient(180deg, #f9f9f9 0%, #f4f4f6 100%);
@@ -10,28 +11,30 @@
 
 /* ===== LEFT LOGIN (IMAGEM E TEXTO) ===== */
 .left-login {
-  width: 50vw;
-  height: 100vh;
+  width: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 40px;
+  padding: 30px 20px;
   background: #ffffff;
+  order: 1;
+  min-height: 30vh;
 }
 
 .left-login h1 {
   color: #33323a;
-  font-size: 2.2rem;
+  font-size: 1.5rem;
   line-height: 1.3;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   font-weight: 700;
 }
 
 .left-login-image {
   width: 100%;
-  max-width: 450px;
+  max-width: 200px;
   filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.1));
   animation: float 4s ease-in-out infinite;
 }
@@ -47,12 +50,13 @@
 
 /* ===== RIGHT LOGIN (FORMULÁRIO) ===== */
 .right-login {
-  width: 50vw;
-  height: 100vh;
+  width: 100%;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #f4f4f6;
+  min-height: 60vh;
 }
 
 /* ===== CARD LOGIN ===== */
@@ -61,7 +65,7 @@
   max-width: 400px;
   background: #ffffff;
   border-radius: 14px;
-  padding: 30px 35px;
+  padding: 25px 20px;
   box-shadow: 0px 10px 40px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
@@ -72,7 +76,7 @@
   margin: 0;
   text-align: center;
   margin-bottom: 30px;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 /* ===== TEXTFIELD (INPUT) ===== */
@@ -211,63 +215,40 @@
 }
 
 /* ===== RESPONSIVIDADE ===== */
-@media only screen and (max-width: 900px) {
+@media (min-width: 768px) {
   .main-login {
-    flex-direction: column;
-  }
-
-  .left-login, .right-login {
-    width: 100%;
-    height: auto;
-    padding: 30px 20px;
+    flex-direction: row;
   }
 
   .left-login {
-    order: 1;
-    min-height: 40vh;
-    flex-direction: row;
-    gap: 20px;
+    width: 50vw;
+    height: 100vh;
+    padding: 40px;
+    order: 0;
+    min-height: 100vh;
   }
 
   .left-login h1 {
-    text-align: left;
-    margin-bottom: 0;
-    font-size: 1.8rem;
+    font-size: 2.2rem;
+    margin-bottom: 30px;
   }
 
   .left-login-image {
-    max-width: 200px;
+    max-width: 450px;
   }
 
   .right-login {
-    order: 2;
-    min-height: 60vh;
+    width: 50vw;
+    height: 100vh;
+    min-height: 100vh;
   }
 
   .card-login {
-    max-width: 450px;
-  }
-}
-
-@media only screen and (max-width: 500px) {
-  .left-login {
-    flex-direction: column;
-    text-align: center;
-    min-height: 30vh;
-  }
-
-  .left-login h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-  }
-
-  .card-login {
-    padding: 25px 20px;
+    padding: 30px 35px;
   }
 
   .card-login h1 {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
 }
 

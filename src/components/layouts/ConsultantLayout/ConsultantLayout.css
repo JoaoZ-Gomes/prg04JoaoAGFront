@@ -16,14 +16,14 @@
 
 .consultant-main-content {
   flex-grow: 1;
-  padding: 40px 20px;
-  max-width: calc(100% - var(--sidebar-width)); /* Garante que o conteúdo não invada o sidebar */
-  margin-left: var(--sidebar-width); /* Empurra o conteúdo para a direita */
+  padding: 20px 15px;
+  max-width: 100%;
+  margin-left: 0;
 }
 
 /* -------------------- SIDEBAR -------------------- */
 .consultant-sidebar {
-  width: var(--sidebar-width);
+  width: 0;
   min-height: 100vh;
   position: fixed;
   top: 0;
@@ -35,6 +35,7 @@
   flex-direction: column;
   box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
   z-index: 100;
+  overflow: hidden;
 }
 
 .sidebar-header {
@@ -42,7 +43,7 @@
   padding: 10px 20px 30px 20px;
   font-size: 1.2rem;
   font-weight: 700;
-  color: var(--color-primary); /* Cor principal para o título */
+  color: var(--color-primary);
 }
 
 .sidebar-header i {
@@ -75,7 +76,7 @@
 }
 
 .nav-link.active {
-  background-color: var(--color-primary); /* Cor primária para o link ativo */
+  background-color: var(--color-primary);
   font-weight: 700;
 }
 
@@ -86,20 +87,19 @@
 
 .logout-link {
     font-size: 0.9rem;
-    color: #ffcccc; /* Vermelho claro para o 'Sair' */
+    color: #ffcccc;
 }
 
-/* -------------------- RESPONSIVIDADE (MOBILE) -------------------- */
-@media (max-width: 992px) {
-  /* Em telas menores, o sidebar é oculto ou transformado em um menu móvel */
+/* -------------------- RESPONSIVIDADE (DESKTOP) -------------------- */
+@media (min-width: 992px) {
   .consultant-sidebar {
-    width: 0;
-    overflow: hidden;
+    width: var(--sidebar-width);
+    overflow: visible;
   }
 
   .consultant-main-content {
-    max-width: 100%;
-    margin-left: 0;
-    padding: 20px 10px;
+    max-width: calc(100% - var(--sidebar-width));
+    margin-left: var(--sidebar-width);
+    padding: 40px 20px;
   }
 }

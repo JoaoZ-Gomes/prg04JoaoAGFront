@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ConsultantSidebar from '../../components/sidebars/ConsultantSidebar'
+import * as consultorService from '../../services/consultorService'
+import * as clienteService from '../../services/clienteService'
 import '../../components/layouts/ConsultantLayout/ConsultantLayout.css'
 import './ConsultantDashboard.css'
 
@@ -16,42 +18,24 @@ export default function ConsultantDashboard() {
   const [newAltura, setNewAltura] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
 
   // -------------------- BUSCA NO BACKEND --------------------
- useEffect(() => {
-  const token = localStorage.getItem('jwt_token')
-  console.log('Token obtido do localStorage:', token)
-
-  fetch('http://localhost:8080/api/clientes', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    }
-  })
-    .then(res => {
-      console.log('Status da resposta:', res.status)
-
-      if (!res.ok) {
-        return res.text().then(text => {
-          console.log('Corpo do erro:', text)
-          throw new Error(`Erro ${res.status}`)
-        })
+  useEffect(() => {
+    const buscarClientes = async () => {
+      try {
+        const data = await consultorService.buscarMeusClientes()
+        setClients(data || [])
+        setLoading(false)
+      } catch (err) {
+        console.error('Erro ao buscar clientes:', err)
+        setErrorMessage('Erro ao carregar clientes. Verifique sua conexão.')
+        setLoading(false)
       }
+    }
 
-      return res.json()
-    })
-    .then(data => {
-      console.log('Resposta completa da API:', data)
-      console.log('Clientes (content):', data.content)
-
-      setClients(data.content) // 🔥 AQUI É O PONTO-CHAVE
-      setLoading(false)
-    })
-    .catch(err => {
-      console.error('Erro ao buscar clientes:', err)
-      setLoading(false)
-    })
-}, [])
+    buscarClientes()
+  }, [])
 
   // -------------------- FUNÇÕES PARA MODAL --------------------
   const openEditModal = (client) => {
@@ -71,49 +55,23 @@ export default function ConsultantDashboard() {
   const handleUpdateClient = async () => {
     if (!selectedClient) return
 
-    const token = localStorage.getItem('jwt_token')
-    if (!token) {
-      setErrorMessage('Token de autenticação não encontrado. Faça login novamente.')
-      setTimeout(() => setErrorMessage(''), 5000)
-      navigate('/login')
-      return
-    }
-
-    console.log('Token usado na atualização:', token)
-    console.log('ID do cliente:', selectedClient.id)
-    console.log('Dados enviados:', { pesoAtual: parseFloat(newPeso), altura: parseFloat(newAltura) })
-
     try {
-      const response = await fetch(`http://localhost:8080/api/clientes/${selectedClient.id}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          pesoAtual: parseFloat(newPeso),
-          altura: parseFloat(newAltura)
-        })
-      })
-
-      console.log('Status da resposta:', response.status)
-      console.log('Headers da resposta:', response.headers)
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        console.log('Corpo do erro:', errorText)
-        throw new Error(`Erro ${response.status}: ${errorText}`)
+      const clienteData = {
+        pesoAtual: parseFloat(newPeso),
+        altura: parseFloat(newAltura)
       }
 
+      await clienteService.atualizarCliente(selectedClient.id, clienteData)
+
       // Atualizar a lista de clientes localmente
-      setClients(clients.map(c => c.id === selectedClient.id ? { ...c, pesoAtual: parseFloat(newPeso), altura: parseFloat(newAltura) } : c))
+      setClients(clients.map(c => c.id === selectedClient.id ? { ...c, ...clienteData } : c))
       closeModal()
       setSuccessMessage('Cliente atualizado com sucesso!')
-      setTimeout(() => setSuccessMessage(''), 5000) // Limpar após 5 segundos
+      setTimeout(() => setSuccessMessage(''), 5000)
     } catch (error) {
       console.error('Erro ao atualizar:', error)
       setErrorMessage(`Erro ao atualizar cliente: ${error.message}`)
-      setTimeout(() => setErrorMessage(''), 5000) // Limpar após 5 segundos
+      setTimeout(() => setErrorMessage(''), 5000)
     }
   }
 
@@ -121,6 +79,35 @@ export default function ConsultantDashboard() {
   const totalClientes = clients.length
   const clientesAtivos = clients.length // ajuste quando tiver status
   const renovacoesVencendo = 0 // placeholder até existir no backend
+
+  // -------------------- FILTRAGEM DE CLIENTES --------------------
+  const filteredClients = clients.filter(client =>
+    client.nome && client.nome.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+// -------------------- FUNÇÃO WHATSAPP --------------------
+  const openWhatsApp = (telefone, nome) => {
+  if (!telefone) {
+    setErrorMessage('Cliente não possui telefone cadastrado.')
+    setTimeout(() => setErrorMessage(''), 4000)
+    return
+  }
+
+  // Remove tudo que não for número
+  const numeroLimpo = telefone.replace(/\D/g, '')
+
+  // Garante que tenha o código do Brasil
+  const numeroComCodigo = numeroLimpo.startsWith('55')
+    ? numeroLimpo
+    : `55${numeroLimpo}`
+
+  const mensagem = encodeURIComponent(`Olá ${nome}, tudo bem? Sou seu consultor e estou entrando em contato sobre seus treinos 💪`)
+
+  const url = `https://wa.me/${numeroComCodigo}?text=${mensagem}`
+
+  window.open(url, '_blank')
+}
+
 
   // -------------------- RENDER --------------------
   return (
@@ -185,6 +172,16 @@ export default function ConsultantDashboard() {
               </button>
             </div>
 
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Buscar cliente por nome..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="search-input"
+              />
+            </div>
+
             <div className="table-responsive">
               {loading ? (
                 <p>Carregando clientes...</p>
@@ -203,35 +200,69 @@ export default function ConsultantDashboard() {
                   <tbody>
                     {clients.length === 0 ? (
                       <tr>
-                        <td colSpan="5">Nenhum cliente vinculado.</td>
+                        <td colSpan="5" style={{ textAlign: 'center', padding: '20px' }}>
+                          Nenhum cliente vinculado.
+                        </td>
                       </tr>
                     ) : (
-                      clients.map(client => (
+                      filteredClients.map(client => (
                         <tr key={client.id}>
+
+                          {/* CLIENTE */}
                           <td data-label="Cliente">
                             <div className="client-info">
-                              <div className="avatar">{(client.nome || 'U').charAt(0).toUpperCase()}</div>
-                              <span className="client-name">{client.nome || 'Cliente'}</span>
+                              <div className="avatar">
+                                {(client.nome || 'U').charAt(0).toUpperCase()}
+                              </div>
+                              <span className="client-name">
+                                {client.nome || 'Cliente'}
+                              </span>
                             </div>
                           </td>
+
+                          {/* OBJETIVO */}
                           <td data-label="Objetivo">
-                            <span className={`badge-objetivo ${(client.objetivo || '').toLowerCase().replace(' ', '-')}`}>
+                            <span className={`badge-objetivo ${(client.objetivo || '').toLowerCase().replace(/\s+/g, '-')}`}>
                               {client.objetivo || 'Não definido'}
                             </span>
                           </td>
-                          <td data-label="Peso">{client.pesoAtual || '—'}</td>
-                          <td data-label="Altura">{client.altura || '—'}</td>
+
+                          {/* PESO */}
+                          <td data-label="Peso Atual">
+                            {client.pesoAtual ? `${client.pesoAtual} kg` : '—'}
+                          </td>
+
+                          {/* ALTURA */}
+                          <td data-label="Altura">
+                            {client.altura ? `${client.altura} m` : '—'}
+                          </td>
+
+                          {/* AÇÕES */}
                           <td data-label="Ações" className="action-cell">
-                            <button className="btn-icon view-btn" title="Ver Perfil">
+                            <button
+                              className="btn-icon view-btn"
+                              title="Ver Perfil"
+                            >
                               <i className="fas fa-eye"></i>
                             </button>
-                            <button className="btn-icon edit-btn" title="Editar Peso e Altura" onClick={() => openEditModal(client)}>
+
+                            <button
+                              className="btn-icon edit-btn"
+                              title="Editar Peso e Altura"
+                              onClick={() => openEditModal(client)}
+                            >
                               <i className="fas fa-pencil-alt"></i>
                             </button>
-                            <button className="btn-icon whatsapp-btn" title="Contatar">
+
+                            <button
+                              className="btn-icon whatsapp-btn"
+                              title="Contatar"
+                              onClick={() => openWhatsApp(client.telefone, client.nome)}
+                            >
                               <i className="fab fa-whatsapp"></i>
                             </button>
                           </td>
+
                         </tr>
                       ))
                     )}

@@ -1,13 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import * as clienteService from '../../services/clienteService'
 import './Cadastro.css'
-
-// ----------------------------------------------------------------------
-// CONFIGURAÇÃO DA API
-// URL do endpoint para a criação de um novo Cliente.
-// Em ambientes de produção, esta URL deve ser configurada via variáveis de ambiente.
-// ----------------------------------------------------------------------
-const API_URL = 'http://localhost:8080/api/clientes' 
 
 /**
  * Componente funcional da tela de Cadastro de Cliente.
@@ -15,32 +9,22 @@ const API_URL = 'http://localhost:8080/api/clientes'
  * para a API de Backend, tratando os resultados e erros.
  */
 export default function Cadastro() {
-    // Hooks para navegação e controle do estado da requisição.
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     
-    // O estado do formulário (useState) replica a estrutura do ClienteRequestDTO 
-    // do Spring Boot para garantir a integridade do payload enviado.
     const [form, setForm] = useState({
-        // Campos de Autenticação e Identificação (Obrigatórios)
         nome: '',
         email: '',
         senha: '',
-        
-        // Campos de Documentação (Obrigatórios no DTO)
         cpf: '',           
         dataNascimento: '', 
-        
-        // Campos de Contato (Opcionais)
-        rg: '',            
         telefone: '',      
     })
 
     /**
      * Tratador universal de mudanças em elementos de input e seleção.
-     * Atualiza o estado 'form' dinamicamente com base no atributo 'name'.
-     * @param {React.ChangeEvent<HTMLInputElement | HTMLSelectElement>} e - Evento de mudança.
+     * @param {React.ChangeEvent<HTMLInputElement>} e - Evento de mudança.
      */
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -49,12 +33,11 @@ export default function Cadastro() {
 
     /**
      * Lógica de submissão. Executa validações primárias e inicia a comunicação com o Backend.
-     * Realiza o tratamento de erros de rede ou erros de validação da API (Status 4xx/5xx).
      * @param {React.FormEvent} e - Evento de submissão do formulário.
      */
     const handleSubmit = async (e) => {
         e.preventDefault()
-        setError(null) // Reseta o erro para nova tentativa
+        setError(null)
 
         // 1. VALIDAÇÃO DE OBRIGATORIEDADE
         if (!form.nome || !form.email || !form.senha || !form.cpf || !form.dataNascimento) {
@@ -71,51 +54,38 @@ export default function Cadastro() {
         setLoading(true)
 
         // 3. CONSTRUÇÃO DO PAYLOAD
-        // Mapeamento final dos dados para o formato JSON esperado pelo ClienteRequestDTO.
         const clienteData = {
-            nome: form.nome,
-            email: form.email,
+            nome: form.nome.trim(),
+            email: form.email.trim(),
             senha: form.senha,
-            cpf: form.cpf,
-            dataNascimento: form.dataNascimento, // Formato YYYY-MM-DD
-            
-            // Tratamento de campos opcionais: garante que sejam enviados como 'null' se vazios.
-            rg: form.rg || null, 
-            telefone: form.telefone || null,
+            cpf: form.cpf.trim(),
+            dataNascimento: form.dataNascimento,
+        }
+        
+        // Adicionar telefone apenas se preenchido
+        if (form.telefone && form.telefone.trim()) {
+            clienteData.telefone = form.telefone.trim();
         }
 
         try {
-            // 4. REQUISIÇÃO POST PARA A API
-            const response = await fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(clienteData),
-            })
+            // 4. REQUISIÇÃO PARA A API USANDO O SERVIÇO
+            await clienteService.criarCliente(clienteData)
+            
+            // Sucesso
+            alert('✅ Cadastro realizado com sucesso! Você já pode fazer login.')
+            navigate('/login')
 
-            // 5. TRATAMENTO DA RESPOSTA
-            if (response.ok) {
-                // Sucesso (Status 200/201). Notifica o usuário e redireciona.
-                alert('✅ Cadastro realizado com sucesso! Você já pode fazer login.')
-                navigate('/login')
-            } else {
-                // Erro de API (4xx ou 5xx). Tenta ler a mensagem de erro fornecida pelo servidor.
-                const errorData = await response.json().catch(() => ({ message: 'Erro desconhecido' }));
-                
-                let errorMessage = '❌ Erro ao realizar o cadastro. Tente novamente.';
-                
-                if (errorData.message) {
-                     // Exibe a mensagem de Regra de Negócio ou Validação do Backend (e.g., "E-mail já cadastrado").
-                     errorMessage = errorData.message; 
-                }
-
-                setError(errorMessage);
-            }
         } catch (err) {
-            // Erro de comunicação (Servidor offline, CORS, etc.)
-            console.error("Erro na comunicação com a API:", err)
-            setError('❌ Não foi possível conectar ao servidor. Verifique sua conexão ou se a API está online.')
+            console.error("Erro ao criar cliente:", err)
+            
+            let errorMessage = '❌ Erro ao realizar o cadastro. Tente novamente.';
+            
+            // Tenta extrair mensagem de erro mais específica
+            if (err.message) {
+                errorMessage = err.message;
+            }
+
+            setError(errorMessage);
         } finally {
             setLoading(false)
         }
@@ -156,11 +126,6 @@ export default function Cadastro() {
                         <div className="textfield">
                             <label htmlFor="cpf">CPF (Somente números)</label>
                             <input type="text" id="cpf" name="cpf" placeholder="00011122233" maxLength="11" value={form.cpf} onChange={handleChange} required />
-                        </div>
-
-                        <div className="textfield">
-                            <label htmlFor="rg">RG (Opcional)</label>
-                            <input type="text" id="rg" name="rg" placeholder="Opcional" value={form.rg} onChange={handleChange} />
                         </div>
                     </div>
                     
