@@ -23,13 +23,14 @@ public class CorsConfiguration implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                // Permite qualquer porta do localhost
-                .allowedOriginPatterns("http://localhost:*")
-                // Permite todos os métodos HTTP comuns
+                .allowedOriginPatterns(
+                        "http://localhost:*",
+                        "https://*.vercel.app",
+                        "https://phteam-20kpzu3t5-joaogomes-projects-741c7808.vercel.app"
+                )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                // Permite envio de cookies/token se necessário
-                .allowCredentials(true)
-                // Permite qualquer header
-                .allowedHeaders("*");
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
+
 }

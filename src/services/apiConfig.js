@@ -4,11 +4,7 @@
  */
 
 // Obtém a URL base da API via variável de ambiente
-function getApiBaseUrl() {
-  return import.meta.env.VITE_API_BASE_URL;
-}
-
-const API_BASE_URL = getApiBaseUrl();
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
 // Debug: mostra qual URL está sendo usada
 console.log('[API Config] Using API_BASE_URL:', API_BASE_URL);

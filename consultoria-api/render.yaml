@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: consultoria-api
+    runtime: docker
+    plan: free
+    region: sfo
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DATABASE_URL
+        fromDatabase:
+          name: consultoria-db
+          property: connectionString
+      - key: JWT_SECRET
+        sync: false
+      - key: PORT
+        value: "8080"
+    dockerfilePath: ./Dockerfile
+
+databases:
+  - name: consultoria-db
+    databaseName: neondb
+    user: neondb_owner
+    plan: free
+    region: sfo
+    postgresMajorVersion: 16
