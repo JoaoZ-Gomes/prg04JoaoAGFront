@@ -3,14 +3,15 @@
  * Define a URL base e fornece funções reutilizáveis para requisições HTTP com autenticação JWT
  */
 
-// Em produção (Vercel), VITE_API_BASE_URL deve estar configurada nas Environment Variables
-// Em desenvolvimento, usa localhost como fallback
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+// Obtém a URL base da API via variável de ambiente
+function getApiBaseUrl() {
+  return import.meta.env.VITE_API_BASE_URL;
+}
+
+const API_BASE_URL = getApiBaseUrl();
 
 // Debug: mostra qual URL está sendo usada
-if (!import.meta.env.PROD) {
-  console.log('[API Config] Using API_BASE_URL:', API_BASE_URL);
-}
+console.log('[API Config] Using API_BASE_URL:', API_BASE_URL);
 
 /**
  * Função para obter o token JWT do localStorage
