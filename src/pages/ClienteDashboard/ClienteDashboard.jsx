@@ -47,7 +47,8 @@ export default function ClienteDashboard() {
         // 2. Requisição Protegida para Obter os Dados do Cliente
         const fetchPerfil = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/clientes/meu-perfil', {
+                const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+                const response = await fetch(`${apiUrl}/clientes/meu-perfil`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,

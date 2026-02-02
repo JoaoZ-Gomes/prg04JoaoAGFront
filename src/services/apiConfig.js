@@ -3,7 +3,7 @@
  * Define a URL base e fornece funções reutilizáveis para requisições HTTP com autenticação JWT
  */
 
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
 /**
  * Função para obter o token JWT do localStorage
