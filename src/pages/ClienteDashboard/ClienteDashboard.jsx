@@ -5,6 +5,7 @@ import '../../components/layouts/ClientLayout/ClientLayout.css'
 import './ClienteDashboard.css'
 import { buscarTodosObjetivos } from '../../services/objetivoService'
 import { buscarTodasFichasSemPaginacao, criarFicha, atualizarFicha } from '../../services/fichaService'
+import { apiGet } from '../../services/apiConfig'
 
 /**
  * Componente principal da Dashboard do Cliente.
@@ -47,33 +48,20 @@ export default function ClienteDashboard() {
         // 2. Requisição Protegida para Obter os Dados do Cliente
         const fetchPerfil = async () => {
             try {
-                const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
-                const response = await fetch(`${apiUrl}/clientes/meu-perfil`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setPerfilData(data);
-                    // Extrai o primeiro nome do cliente
-                    setClienteNome(data.nome ? data.nome.split(' ')[0] : 'Cliente'); 
-                } else if (response.status === 401 || response.status === 403) {
+                const data = await apiGet('/clientes/meu-perfil');
+                setPerfilData(data);
+                // Extrai o primeiro nome do cliente
+                setClienteNome(data.nome ? data.nome.split(' ')[0] : 'Cliente');
+            } catch (err) {
+                if (err.message && err.message.includes('401')) {
                     setErrorMessage('Sessão expirada ou acesso negado. Faça login novamente.');
                     localStorage.removeItem('jwt_token');
                     localStorage.removeItem('user_role');
                     setTimeout(() => navigate('/login'), 3000);
                 } else {
-                    const errorDetails = await response.json().catch(() => ({ message: 'Erro desconhecido' }));
-                    setErrorMessage(`Erro ao carregar perfil: ${errorDetails.message || response.statusText}`);
-                    console.error('Erro ao carregar perfil:', response.status, errorDetails);
+                    setErrorMessage('Erro de conexão com o servidor. Tente novamente mais tarde.');
+                    console.error('Erro de rede:', err);
                 }
-            } catch (err) {
-                setErrorMessage('Erro de conexão com o servidor. Tente novamente mais tarde.');
-                console.error('Erro de rede:', err);
             } finally {
                 setLoading(false);
             }
