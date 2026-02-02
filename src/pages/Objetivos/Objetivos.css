@@ -1,0 +1,23 @@
+.objetivos-page.container {
+  padding: 20px;
+}
+
+.objetivos-form, .objetivos-list {
+  background: #fff;
+  padding: 16px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
+}
+
+.form-row { margin-bottom: 8px; }
+.form-row label { display:block; font-weight:600; margin-bottom:6px; }
+.form-row input, .form-row textarea { width:100%; padding:8px; border:1px solid #ddd; border-radius:4px }
+
+.btn-primary { background:#2b6cb0; color:white; border:none; padding:8px 12px; border-radius:4px }
+.btn-danger { background:#e53e3e; color:white; border:none; padding:6px 10px; border-radius:4px }
+
+.objetivos-list ul { list-style:none; padding:0; margin:0 }
+.objetivo-item { display:flex; justify-content:space-between; align-items:flex-start; padding:10px 0; border-bottom:1px solid #f0f0f0 }
+.objetivo-item .meta p { margin:4px 0 0 0; color:#555 }
+.error { color:#c53030 }

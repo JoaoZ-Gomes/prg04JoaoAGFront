@@ -73,6 +73,22 @@ export const getUserId = () => {
 };
 
 /**
+ * Obter dados completos do usuário logado
+ * @returns {Object|null} {email, role, id} do usuário ou null
+ */
+export const getUser = () => {
+  if (!isAuthenticated()) {
+    return null;
+  }
+
+  return {
+    email: getUserEmail(),
+    role: getUserRole(),
+    id: getUserId(),
+  };
+};
+
+/**
  * Armazenar o ID do usuário no localStorage
  * Útil para chamadas de API subsequentes
  * @param {number|string} id - ID do usuário
@@ -88,5 +104,6 @@ export default {
   getUserRole,
   getUserEmail,
   getUserId,
+  getUser,
   setUserId,
 };

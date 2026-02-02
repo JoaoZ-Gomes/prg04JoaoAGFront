@@ -16,11 +16,34 @@
     --color-neutral-200: #e5e7eb;
     --color-neutral-600: #4b5563;
     --color-neutral-800: #1f2937;
+    --color-ph-primary: #c62828;
 
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --radius-lg: 12px;
     --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== BOTÃO VOLTAR PARA HOME ===== */
+.btn-voltar-home {
+    margin-top: 15px;
+    padding: 10px 16px;
+    border: 1px solid var(--color-ph-primary);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-ph-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 0.95rem;
+    display: inline-block;
+}
+
+.btn-voltar-home:hover {
+    background: var(--color-ph-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0px 5px 15px rgba(198, 40, 40, 0.3);
 }
 
 .consultant-dashboard-container {

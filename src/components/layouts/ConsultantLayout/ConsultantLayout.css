@@ -21,9 +21,58 @@
   margin-left: 0;
 }
 
+/* -------------------- Botão Toggle Sidebar Mobile -------------------- */
+.sidebar-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1001;
+  width: 45px;
+  height: 45px;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
+  transition: all 0.3s ease;
+}
+
+.sidebar-toggle-btn:hover {
+  background-color: #a01f1f;
+  box-shadow: 0 6px 16px rgba(198, 40, 40, 0.4);
+  transform: scale(1.1);
+}
+
+.sidebar-toggle-btn:active {
+  transform: scale(0.95);
+}
+
+/* Overlay para fechar sidebar */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+@media (max-width: 991px) {
+  .sidebar-overlay {
+    display: block;
+  }
+}
+
 /* -------------------- SIDEBAR -------------------- */
 .consultant-sidebar {
-  width: 0;
+  width: 100%;
   min-height: 100vh;
   position: fixed;
   top: 0;
@@ -34,8 +83,9 @@
   display: flex;
   flex-direction: column;
   box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
-  z-index: 100;
-  overflow: hidden;
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .sidebar-header {
@@ -44,10 +94,39 @@
   font-size: 1.2rem;
   font-weight: 700;
   color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+}
+
+.sidebar-close-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  transition: color 0.3s ease;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+
+.sidebar-close-btn:hover {
+  color: var(--color-primary);
+}
+
+.sidebar-header .header-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .sidebar-header i {
-    margin-right: 5px;
+    margin-right: 0;
 }
 
 .sidebar-nav {
@@ -92,14 +171,70 @@
 
 /* -------------------- RESPONSIVIDADE (DESKTOP) -------------------- */
 @media (min-width: 992px) {
+  .sidebar-toggle-btn {
+    display: none;
+  }
+
+  .sidebar-overlay {
+    display: none !important;
+  }
+
   .consultant-sidebar {
     width: var(--sidebar-width);
-    overflow: visible;
+    overflow-y: auto;
+    position: relative;
+    top: auto;
+    left: auto;
+    min-height: auto;
+    transition: none;
+  }
+
+  .sidebar-header {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .sidebar-close-btn {
+    display: none;
   }
 
   .consultant-main-content {
     max-width: calc(100% - var(--sidebar-width));
     margin-left: var(--sidebar-width);
     padding: 40px 20px;
+  }
+}
+
+/* -------------------- RESPONSIVIDADE (MOBILE) -------------------- */
+@media (max-width: 991px) {
+  .sidebar-toggle-btn {
+    display: flex;
+  }
+
+  .consultant-sidebar {
+    width: 280px;
+    max-width: 85vw;
+    left: -100%;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .consultant-sidebar.open {
+    left: 0;
+    width: 280px;
+    max-width: 85vw;
+  }
+
+  .sidebar-header {
+    position: relative;
+    flex-direction: row;
+  }
+
+  .sidebar-close-btn {
+    display: flex;
+  }
+
+  .consultant-main-content {
+    padding-left: 20px;
+    padding-top: 70px;
   }
 }

@@ -12,6 +12,55 @@
     padding: 20px 15px;
 }
 
+/* -------------------- Botão Toggle Sidebar Mobile -------------------- */
+.sidebar-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    width: 45px;
+    height: 45px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
+    transition: all 0.3s ease;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: #a01f1f;
+    box-shadow: 0 6px 16px rgba(198, 40, 40, 0.4);
+    transform: scale(1.1);
+}
+
+.sidebar-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+/* Overlay para fechar sidebar */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+@media (max-width: 767px) {
+    .sidebar-overlay {
+        display: block;
+    }
+}
+
 /* -------------------- Sidebar do Cliente -------------------- */
 .client-sidebar {
     width: 100%;
@@ -31,6 +80,21 @@
 
 .sidebar-header {
     display: none;
+}
+
+.sidebar-close-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--color-white);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.sidebar-close-btn:hover {
+    color: var(--color-primary);
 }
 
 .sidebar-nav ul {
@@ -102,8 +166,93 @@
     color: var(--color-white);
 }
 
-/* Media query para desktop */
+/* -------------------- Sidebar Aberto no Mobile -------------------- */
+@media (max-width: 767px) {
+    .client-sidebar {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        width: 280px;
+        max-width: 85vw;
+        height: 100vh;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 20px;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .client-sidebar.open {
+        left: 0;
+    }
+
+    .sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-header h2 {
+        color: var(--color-primary);
+        font-size: 1.5rem;
+        margin: 0;
+    }
+
+    .sidebar-close-btn {
+        display: flex;
+    }
+
+    .sidebar-nav ul {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .sidebar-nav li {
+        margin: 0;
+        width: 100%;
+    }
+
+    .sidebar-nav .nav-item {
+        padding: 15px 20px;
+        flex-direction: row;
+        font-size: 1rem;
+        gap: 12px;
+        width: 100%;
+        justify-content: flex-start;
+        border-radius: 0;
+    }
+
+    .sidebar-nav .nav-item span {
+        font-size: 0.95rem;
+    }
+
+    .sidebar-footer {
+        display: block;
+        margin-top: auto;
+        padding: 20px 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .client-main-content {
+        padding-left: 20px;
+        padding-top: 70px;
+    }
+}/* Media query para desktop */
 @media (min-width: 768px) {
+    .sidebar-toggle-btn {
+        display: none;
+    }
+
+    .sidebar-overlay {
+        display: none !important;
+    }
+
     .client-page-layout {
         flex-direction: row;
     }
@@ -129,6 +278,10 @@
     .sidebar-header h2 {
         color: var(--color-primary);
         font-size: 1.8rem;
+    }
+
+    .sidebar-close-btn {
+        display: none;
     }
 
     .sidebar-nav ul {

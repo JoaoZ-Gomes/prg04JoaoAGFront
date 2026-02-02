@@ -1,0 +1,134 @@
+/* ===== PROFILE PAGE ===== */
+
+:root {
+  --primary: #c62828;
+  --dark: #33323a;
+  --muted: #6b6b73;
+  --light-bg: #f4f4f6;
+  --white: #ffffff;
+  --radius: 14px;
+}
+
+.profile-wrapper {
+  background: linear-gradient(180deg, #f9f9f9 0%, #f4f4f6 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.profile-container {
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.profile-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.profile-header h1 {
+  font-size: 2rem;
+  color: var(--dark);
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.profile-header p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.profile-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 30px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(198, 40, 40, 0.08);
+}
+
+.profile-section {
+  margin-bottom: 30px;
+}
+
+.profile-section h2 {
+  font-size: 1.2rem;
+  color: var(--dark);
+  margin-bottom: 20px;
+  font-weight: 600;
+  border-bottom: 2px solid var(--primary);
+  padding-bottom: 10px;
+}
+
+.profile-field {
+  margin-bottom: 20px;
+}
+
+.profile-field label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.profile-value {
+  font-size: 1.1rem;
+  color: var(--dark);
+  margin: 0;
+  padding: 12px;
+  background: rgba(198, 40, 40, 0.04);
+  border-radius: 8px;
+  border-left: 3px solid var(--primary);
+}
+
+.profile-actions {
+  margin-top: 30px;
+  display: flex;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.btn-voltar-dashboard {
+  flex: 1;
+  padding: 12px 20px;
+  border: 1px solid var(--primary);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.95rem;
+}
+
+.btn-voltar-dashboard:hover {
+  background: var(--primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0px 5px 15px rgba(198, 40, 40, 0.3);
+}
+
+/* ===== RESPONSIVO ===== */
+@media (min-width: 768px) {
+  .profile-wrapper {
+    padding: 40px 20px;
+  }
+
+  .profile-container {
+    max-width: 700px;
+  }
+
+  .profile-header h1 {
+    font-size: 2.5rem;
+  }
+
+  .profile-card {
+    padding: 40px;
+  }
+}

@@ -1,27 +1,30 @@
 .header {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px) saturate(180%);
   -webkit-backdrop-filter: blur(12px) saturate(180%);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(198, 40, 40, 0.1);
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
 .header .container {
   max-width: 95%;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 12px 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
 }
 
 .header .brand {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
+  margin-left: 8px;
 }
 
 .header .logo {
@@ -72,14 +75,45 @@
   color: #33323a;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s;
-  padding: 8px 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 8px 4px;
+  border-bottom: 2px solid transparent;
+  font-size: 0.95rem;
 }
 
-.header .nav .btn-cta { padding: 8px 14px; border-radius: 10px; }
-
-.header .nav a:hover {
+.header .nav a:not(.btn-cta):hover {
   color: #c62828;
+  border-bottom-color: #c62828;
+}
+
+.header .nav .btn-cta {
+  padding: 10px 24px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #c62828 0%, #b71c1c 100%);
+  color: white !important;
+  border: none;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(198, 40, 40, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom-color: transparent !important;
+}
+
+.header .nav .btn-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(198, 40, 40, 0.3);
+  background: linear-gradient(135deg, #b71c1c 0%, #a01a1a 100%);
+}
+
+/* ===== BOTÃO LOGOUT ===== */
+.header .nav .btn-logout {
+  background: linear-gradient(135deg, #c62828 0%, #b71c1c 100%);
+  cursor: pointer;
+}
+
+.header .nav .btn-logout:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(198, 40, 40, 0.3);
+  background: linear-gradient(135deg, #b71c1c 0%, #a01a1a 100%);
 }
 
 /* Menu toggle (hamburger) */
@@ -108,11 +142,12 @@
 @media (min-width: 920px) {
   .header .container {
     max-width: 1200px;
-    padding: 0 20px;
+    padding: 12px 20px;
   }
 
   .header .brand {
     gap: 12px;
+    margin-left: 0;
   }
 
   .header .logo {
@@ -134,12 +169,13 @@
   .header .nav {
     position: static;
     flex-direction: row;
-    gap: 24px;
+    gap: 32px;
     background: transparent;
     padding: 0;
     box-shadow: none;
     display: flex;
     min-width: auto;
+    align-items: center;
   }
 
   .menu-toggle { display: none; }

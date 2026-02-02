@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import ConsultantSidebar from '../../components/sidebars/ConsultantSidebar'
 import * as consultorService from '../../services/consultorService'
 import * as clienteService from '../../services/clienteService'
+import { buscarTodosObjetivos } from '../../services/objetivoService'
+import { buscarTodasFichasSemPaginacao, criarFicha, atualizarFicha } from '../../services/fichaService'
 import '../../components/layouts/ConsultantLayout/ConsultantLayout.css'
 import './ConsultantDashboard.css'
 
@@ -16,12 +18,40 @@ export default function ConsultantDashboard() {
   const [selectedClient, setSelectedClient] = useState(null)
   const [newPeso, setNewPeso] = useState('')
   const [newAltura, setNewAltura] = useState('')
+  const [objetivosDisponiveis, setObjetivosDisponiveis] = useState([])
+  const [selectedObjetivoModal, setSelectedObjetivoModal] = useState('')
+  const [objetivosError, setObjetivosError] = useState(null)
   const [successMessage, setSuccessMessage] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
 
   // -------------------- BUSCA NO BACKEND --------------------
+  // Função para carregar objetivos (disponível para retry)
+  const loadObjetivos = async () => {
+    try {
+      setObjetivosError(null)
+      const objs = await buscarTodosObjetivos(0, 1000)
+      const lista = Array.isArray(objs) ? objs : objs
+      setObjetivosDisponiveis(lista)
+    } catch (e) {
+      console.error('Erro ao carregar objetivos:', e)
+      setObjetivosError(e.message || 'Erro ao carregar objetivos')
+    }
+  }
+
   useEffect(() => {
+    // Verifica autenticação/role mínima para acessar o dashboard do consultor
+    const token = localStorage.getItem('jwt_token')
+    const role = localStorage.getItem('user_role')
+    if (!token || role !== 'Consultor') {
+      setErrorMessage('Acesso não autorizado. Faça login como Consultor.')
+      localStorage.removeItem('jwt_token')
+      localStorage.removeItem('user_role')
+      setTimeout(() => navigate('/login'), 1500)
+      setLoading(false)
+      return
+    }
+
     const buscarClientes = async () => {
       try {
         const data = await consultorService.buscarMeusClientes()
@@ -35,13 +65,15 @@ export default function ConsultantDashboard() {
     }
 
     buscarClientes()
-  }, [])
+    loadObjetivos()
+  }, [navigate])
 
   // -------------------- FUNÇÕES PARA MODAL --------------------
   const openEditModal = (client) => {
     setSelectedClient(client)
     setNewPeso(client.pesoAtual || '')
     setNewAltura(client.altura || '')
+    setSelectedObjetivoModal(client.objetivo || '')
     setShowModal(true)
   }
 
@@ -63,8 +95,22 @@ export default function ConsultantDashboard() {
 
       await clienteService.atualizarCliente(selectedClient.id, clienteData)
 
-      // Atualizar a lista de clientes localmente
-      setClients(clients.map(c => c.id === selectedClient.id ? { ...c, ...clienteData } : c))
+      // Atualiza objetivo via ficha (backend guarda objetivo na ficha)
+      try {
+        const fichas = await buscarTodasFichasSemPaginacao()
+        const listaFichas = Array.isArray(fichas) ? fichas : fichas
+        const fichaDoCliente = listaFichas.find(f => f.clienteId === selectedClient.id)
+        if (fichaDoCliente) {
+          await atualizarFicha(fichaDoCliente.id, { id: fichaDoCliente.id, nome: fichaDoCliente.nome || 'Ficha', objetivo: selectedObjetivoModal })
+        } else {
+          await criarFicha({ nome: 'Ficha', objetivo: selectedObjetivoModal, clienteId: selectedClient.id })
+        }
+      } catch (e) {
+        console.error('Erro ao salvar objetivo na ficha:', e)
+      }
+
+      // Atualizar a lista de clientes localmente (peso/altura/objetivo)
+      setClients(clients.map(c => c.id === selectedClient.id ? { ...c, ...clienteData, objetivo: selectedObjetivoModal || c.objetivo } : c))
       closeModal()
       setSuccessMessage('Cliente atualizado com sucesso!')
       setTimeout(() => setSuccessMessage(''), 5000)
@@ -120,6 +166,13 @@ export default function ConsultantDashboard() {
           <div className="dashboard-header">
             <h1>Bem-vindo(a), Consultor(a)!</h1>
             <p>Visão geral e gerenciamento dos seus clientes.</p>
+            <button 
+              className="btn-voltar-home"
+              onClick={() => navigate('/')}
+              title="Voltar para página inicial"
+            >
+              ← Voltar para Home
+            </button>
           </div>
 
           {successMessage && (
@@ -240,15 +293,8 @@ export default function ConsultantDashboard() {
                           {/* AÇÕES */}
                           <td data-label="Ações" className="action-cell">
                             <button
-                              className="btn-icon view-btn"
-                              title="Ver Perfil"
-                            >
-                              <i className="fas fa-eye"></i>
-                            </button>
-
-                            <button
                               className="btn-icon edit-btn"
-                              title="Editar Peso e Altura"
+                              title="Editar Peso, Altura e Objetivo"
                               onClick={() => openEditModal(client)}
                             >
                               <i className="fas fa-pencil-alt"></i>
@@ -321,6 +367,23 @@ export default function ConsultantDashboard() {
                   step="0.01"
                 />
               </label>
+              <label>
+                Objetivo:
+                <select value={selectedObjetivoModal} onChange={(e) => setSelectedObjetivoModal(e.target.value)}>
+                  <option value="">-- Selecionar objetivo --</option>
+                  {objetivosDisponiveis.map(o => (
+                    <option key={o.id} value={o.tipo || o.descricao}>
+                      {o.tipo ? `${o.tipo} — ${o.descricao}` : o.descricao}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              {objetivosError && (
+                <div className="error" style={{marginTop:8}}>
+                  Erro ao carregar objetivos: {objetivosError}
+                  <button className="btn-alert" style={{marginLeft:8}} onClick={loadObjetivos}>Tentar novamente</button>
+                </div>
+              )}
             </div>
             <div className="modal-actions">
               <button onClick={closeModal}>Cancelar</button>

@@ -119,6 +119,10 @@ export default function Login() {
                         Cadastrar
                     </button>
 
+                    <button className="btn-voltar" onClick={() => navigate('/')} disabled={loading}>
+                        Voltar para Home
+                    </button>
+
                     <div className="miss-password">
                         <a href="#miss-password"><p>Esqueci minha senha</p></a>
                     </div>
