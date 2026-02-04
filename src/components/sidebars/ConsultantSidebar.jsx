@@ -8,9 +8,9 @@ export default function ConsultantSidebar() {
 
   const navItems = [
     { to: '/consultor/dashboard', icon: 'fas fa-chart-line', label: 'Dashboard' },
+    { to: '/consultor/dashboard?tab=avaliacoes', icon: 'fas fa-notes-medical', label: 'Avaliações' },
     { to: '/consultor/criar-treino', icon: 'fas fa-clipboard-list', label: 'Criar Treino' },
     { to: '/consultor/exercicios', icon: 'fas fa-database', label: 'Banco de Exercícios' },
-    { to: '/consultor/feedback', icon: 'fas fa-comments', label: 'Feedbacks' },
   ]
 
   return (
@@ -29,6 +29,13 @@ export default function ConsultantSidebar() {
             <i className="fas fa-user-tie"></i>
             <span>Área do Consultor</span>
           </div>
+          <button 
+            className="sidebar-close-btn"
+            onClick={closeSidebar}
+            aria-label="Fechar menu"
+          >
+            <i className="fas fa-times"></i>
+          </button>
         </div>
         
         <nav className="sidebar-nav">
@@ -36,6 +43,8 @@ export default function ConsultantSidebar() {
             <NavLink
               key={item.to}
               to={item.to}
+              // O "end" evita que o Dashboard fique ativo junto com Avaliações
+              end={item.to === '/consultor/dashboard'} 
               className={({ isActive }) => "nav-link" + (isActive ? " active" : "")}
               onClick={closeSidebar}
             >

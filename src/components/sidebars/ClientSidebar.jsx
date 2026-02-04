@@ -23,8 +23,14 @@ export default function ClientSidebar() {
             {sidebarOpen && <div className="sidebar-overlay" onClick={closeSidebar}></div>}
             <aside className={`client-sidebar ${sidebarOpen ? 'open' : ''}`}>
             <div className="sidebar-header">
-                {/* Você pode colocar um logo ou nome da empresa aqui */}
                 <h2>PH TEAM</h2>
+                <button 
+                    className="sidebar-close-btn"
+                    onClick={closeSidebar}
+                    aria-label="Fechar menu"
+                >
+                    <i className="fas fa-times"></i>
+                </button>
             </div>
             <nav className="sidebar-nav">
                 <ul>
@@ -46,15 +52,7 @@ export default function ClientSidebar() {
                             <i className="fas fa-dumbbell"></i> <span>Meu Treino</span>
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink 
-                            to="/cliente/dieta" 
-                            className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}
-                            onClick={closeSidebar}
-                        >
-                            <i className="fas fa-utensils"></i> <span>Minha Dieta</span>
-                        </NavLink>
-                    </li>
+
                     <li>
                         <NavLink 
                             to="/cliente/progresso" 
@@ -64,15 +62,7 @@ export default function ClientSidebar() {
                             <i className="fas fa-chart-line"></i> <span>Meu Progresso</span>
                         </NavLink>
                     </li>
-                    <li>
-                        <NavLink 
-                            to="/cliente/consultor" 
-                            className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}
-                            onClick={closeSidebar}
-                        >
-                            <i className="fas fa-comments"></i> <span>Consultor</span>
-                        </NavLink>
-                    </li>
+                    {/* Consultor tab removed per request */}
                     <li>
                         <NavLink 
                             to="/cliente/configuracoes" 

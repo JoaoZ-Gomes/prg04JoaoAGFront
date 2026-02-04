@@ -1,15 +1,32 @@
-/* ClientLayout.css */
+/* ClientLayout.css - Professional Sidebar Design */
+
+:root {
+    --primary: #c62828;
+    --primary-light: #e53935;
+    --primary-dark: #b71c1c;
+    --dark: #1a1a1a;
+    --dark-secondary: #2d2d2d;
+    --text-main: #333333;
+    --text-secondary: #666666;
+    --bg-light: #f8f9fa;
+    --bg-lighter: #ffffff;
+    --border-light: #e0e0e0;
+    --color-light-bg: #f8f9fa;
+    --color-dark: #2d2d2d;
+    --color-white: #ffffff;
+}
 
 .client-page-layout {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     min-height: 100vh;
-    background-color: var(--color-light-bg);
+    background-color: var(--bg-light);
 }
 
 .client-main-content {
     flex-grow: 1;
-    padding: 20px 15px;
+    padding: 24px;
+    overflow-y: auto;
 }
 
 /* -------------------- Botão Toggle Sidebar Mobile -------------------- */
@@ -63,38 +80,40 @@
 
 /* -------------------- Sidebar do Cliente -------------------- */
 .client-sidebar {
-    width: 100%;
-    height: auto;
-    background-color: var(--color-dark);
-    color: var(--color-white);
-    padding: 10px 0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: white;
+    padding: 0;
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
+    flex-direction: column;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 100;
 }
 
 .sidebar-header {
-    display: none;
+    padding: 24px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: var(--primary);
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 .sidebar-close-btn {
     display: none;
-    background: none;
-    border: none;
-    color: var(--color-white);
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding: 5px;
-    transition: color 0.3s ease;
 }
 
-.sidebar-close-btn:hover {
-    color: var(--color-primary);
+.sidebar-nav {
+    flex-grow: 1;
+    padding: 12px 0;
 }
 
 .sidebar-nav ul {
@@ -102,85 +121,94 @@
     padding: 0;
     margin: 0;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
 }
 
 .sidebar-nav li {
-    margin: 0 5px;
+    margin: 0;
 }
 
 .sidebar-nav .nav-item {
     display: flex;
     align-items: center;
-    padding: 8px 10px;
+    padding: 14px 20px;
     color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    font-size: 0.8rem;
-    transition: background-color 0.3s, color 0.3s;
-    flex-direction: column;
-    gap: 5px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    gap: 12px;
+    border-left: 3px solid transparent;
+    font-weight: 500;
 }
 
 .sidebar-nav .nav-item i {
-    font-size: 1rem;
+    font-size: 1.1rem;
+    width: 24px;
+    text-align: center;
 }
 
 .sidebar-nav .nav-item span {
-    font-size: 0.7rem;
+    font-size: 0.95rem;
 }
 
 .sidebar-nav .nav-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--color-white);
+    background-color: rgba(198, 40, 40, 0.15);
+    color: white;
+    border-left-color: var(--primary);
 }
 
 .sidebar-nav .nav-item.active {
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    font-weight: 600;
+    background-color: var(--primary);
+    color: white;
+    border-left-color: var(--primary-light);
+    font-weight: 700;
 }
 
 .sidebar-footer {
-    display: none;
+    padding: 16px 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    display: block;
 }
 
 .btn-logout {
-    background-color: transparent;
-    border: 1px solid var(--color-primary);
-    color: var(--color-primary);
-    padding: 10px 15px;
-    border-radius: 4px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 12px 20px;
     cursor: pointer;
     font-weight: 600;
-    transition: background-color 0.3s, color 0.3s;
+    transition: all 0.3s ease;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 8px;
+    justify-content: flex-start;
+    gap: 12px;
+    font-size: 0.9rem;
+    border-radius: 0;
+    margin: 0;
 }
 
 .btn-logout:hover {
-    background-color: var(--color-primary);
-    color: var(--color-white);
+    background-color: rgba(198, 40, 40, 0.2);
+    color: white;
 }
 
-/* -------------------- Sidebar Aberto no Mobile -------------------- */
-@media (max-width: 767px) {
+/* -------------------- Mobile Sidebar -------------------- */
+@media (max-width: 768px) {
+    .client-page-layout {
+        flex-direction: column;
+    }
+
     .client-sidebar {
+        width: 280px;
+        max-width: 85vw;
         position: fixed;
         left: -100%;
         top: 0;
-        width: 280px;
-        max-width: 85vw;
         height: 100vh;
-        flex-direction: column;
-        justify-content: flex-start;
-        padding-top: 20px;
         transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
         z-index: 1000;
+        border-radius: 0;
         overflow-y: auto;
     }
 
@@ -192,130 +220,49 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 10px 20px;
-        margin-bottom: 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .sidebar-header h2 {
-        color: var(--color-primary);
-        font-size: 1.5rem;
-        margin: 0;
+        position: relative;
     }
 
     .sidebar-close-btn {
         display: flex;
-    }
-
-    .sidebar-nav ul {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-    }
-
-    .sidebar-nav li {
-        margin: 0;
-        width: 100%;
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0;
     }
 
     .sidebar-nav .nav-item {
-        padding: 15px 20px;
-        flex-direction: row;
-        font-size: 1rem;
-        gap: 12px;
-        width: 100%;
-        justify-content: flex-start;
-        border-radius: 0;
-    }
-
-    .sidebar-nav .nav-item span {
-        font-size: 0.95rem;
-    }
-
-    .sidebar-footer {
-        display: block;
-        margin-top: auto;
-        padding: 20px 15px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 14px 20px;
     }
 
     .client-main-content {
-        padding-left: 20px;
-        padding-top: 70px;
+        padding: 70px 16px 24px 16px;
     }
-}/* Media query para desktop */
-@media (min-width: 768px) {
+}
+
+/* Desktop Sidebar */
+@media (min-width: 769px) {
     .sidebar-toggle-btn {
-        display: none;
+        display: none !important;
     }
 
     .sidebar-overlay {
         display: none !important;
     }
 
-    .client-page-layout {
-        flex-direction: row;
-    }
-
     .client-sidebar {
-        width: 250px;
-        height: auto;
-        padding: 20px 0;
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        flex-direction: column;
-        justify-content: flex-start;
-        position: static;
-        z-index: auto;
-    }
-
-    .sidebar-header {
-        display: block;
-        text-align: center;
-        margin-bottom: 30px;
-        padding: 0 15px;
-    }
-
-    .sidebar-header h2 {
-        color: var(--color-primary);
-        font-size: 1.8rem;
-    }
-
-    .sidebar-close-btn {
-        display: none;
-    }
-
-    .sidebar-nav ul {
-        display: block;
-    }
-
-    .sidebar-nav li {
-        margin-bottom: 5px;
-    }
-
-    .sidebar-nav .nav-item {
-        padding: 12px 20px;
-        flex-direction: row;
-        font-size: 1rem;
-        gap: 10px;
-    }
-
-    .sidebar-nav .nav-item i {
-        font-size: 1.1rem;
-    }
-
-    .sidebar-nav .nav-item span {
-        font-size: 1rem;
-    }
-
-    .sidebar-footer {
-        display: block;
-        margin-top: auto;
-        padding: 20px 15px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        text-align: center;
+        position: sticky !important;
+        top: 0 !important;
+        left: auto !important;
+        width: 250px !important;
     }
 
     .client-main-content {
-        padding: 30px;
+        padding: 24px;
     }
 }

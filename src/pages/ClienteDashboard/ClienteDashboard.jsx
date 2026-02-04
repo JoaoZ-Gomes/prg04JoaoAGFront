@@ -147,15 +147,19 @@ export default function ClienteDashboard() {
             <div className="client-main-content">
                 <div className="dashboard-container">
                     <div className="dashboard-header">
-                        <h1>👋 Bem-vindo(a) de volta, {clienteNome}!</h1>
-                        <p>Aqui você acompanha seu progresso, planos e interage com seu consultor.</p>
-                        <button 
-                          className="btn-voltar-home"
-                          onClick={() => navigate('/')}
-                          title="Voltar para página inicial"
-                        >
-                          ← Voltar para Home
-                        </button>
+                        <div className="header-content">
+                            <div className="header-text">
+                                <h1>Bem-vindo(a), {clienteNome}!</h1>
+                                <p>Seu espaço para acompanhar progresso, planos e comunicação com seu consultor</p>
+                            </div>
+                            <button 
+                              className="btn-voltar-home"
+                              onClick={() => navigate('/')}
+                              title="Voltar para página inicial"
+                            >
+                              Voltar para Home
+                            </button>
+                        </div>
                     </div>
 
                     {successMessage && (
@@ -174,25 +178,41 @@ export default function ClienteDashboard() {
 
                     {/* -------------------- MÉTRICAS RÁPIDAS DO CLIENTE -------------------- */}
                     <div className="metrics-summary">
-                        <div className="metric-box dashboard-metric">
-                            <i className="fas fa-bullseye icon-primary"></i>
-                            <span className="value">{(TIPO_OBJETIVO_LABELS[selectedObjetivo] || TIPO_OBJETIVO_LABELS[perfilData?.objetivo] || selectedObjetivo || perfilData?.objetivo) || '⚠️ Não definido'}</span>
-                            <span className="label">Seu Objetivo</span>
+                        <div className="metric-box">
+                            <div className="metric-icon">
+                                <i className="fas fa-bullseye"></i>
+                            </div>
+                            <div className="metric-content">
+                                <span className="metric-label">Seu Objetivo</span>
+                                <span className="metric-value">{(TIPO_OBJETIVO_LABELS[selectedObjetivo] || TIPO_OBJETIVO_LABELS[perfilData?.objetivo] || selectedObjetivo || perfilData?.objetivo) || 'Não definido'}</span>
+                            </div>
                         </div>
-                        <div className="metric-box dashboard-metric">
-                            <i className="fas fa-weight icon-blue"></i>
-                            <span className="value">{perfilData?.pesoAtual ? `${perfilData.pesoAtual.toFixed(1)} kg` : 'N/A'}</span>
-                            <span className="label">Peso Atual</span>
+                        <div className="metric-box">
+                            <div className="metric-icon">
+                                <i className="fas fa-weight"></i>
+                            </div>
+                            <div className="metric-content">
+                                <span className="metric-label">Peso Atual</span>
+                                <span className="metric-value">{perfilData?.pesoAtual ? `${perfilData.pesoAtual.toFixed(1)} kg` : 'N/A'}</span>
+                            </div>
                         </div>
-                        <div className="metric-box dashboard-metric">
-                            <i className="fas fa-ruler-vertical icon-green"></i>
-                            <span className="value">{perfilData?.altura ? `${perfilData.altura.toFixed(2)} m` : 'N/A'}</span>
-                            <span className="label">Sua Altura</span>
+                        <div className="metric-box">
+                            <div className="metric-icon">
+                                <i className="fas fa-ruler-vertical"></i>
+                            </div>
+                            <div className="metric-content">
+                                <span className="metric-label">Altura</span>
+                                <span className="metric-value">{perfilData?.altura ? `${perfilData.altura.toFixed(2)} m` : 'N/A'}</span>
+                            </div>
                         </div>
-                        <div className="metric-box dashboard-metric">
-                            <i className="fas fa-phone icon-warning"></i>
-                            <span className="value">{perfilData?.telefone || 'N/A'}</span>
-                            <span className="label">Telefone</span>
+                        <div className="metric-box">
+                            <div className="metric-icon">
+                                <i className="fas fa-phone"></i>
+                            </div>
+                            <div className="metric-content">
+                                <span className="metric-label">Telefone</span>
+                                <span className="metric-value">{perfilData?.telefone || 'N/A'}</span>
+                            </div>
                         </div>
                     </div>
 
@@ -263,36 +283,49 @@ export default function ClienteDashboard() {
                     {/* -------------------- MÓDULOS DE CONTEÚDO -------------------- */}
                     <div className="client-modules-grid">
                         {/* MÓDULO: SEU PLANO DE TREINO */}
-                        <div className="module-card">
-                            <h3><i className="fas fa-dumbbell"></i> Meu Plano de Treino</h3>
-                            <p>Objetivo: <strong>{perfilData?.objetivo || '⚠️ Não configurado'}</strong></p>
-                            <p>Frequência Semanal: <strong>{perfilData?.frequenciaSemanal || '4x por semana'}</strong></p>
+                        <div className="module-card training-module">
+                            <div className="module-header">
+                                <div className="module-icon">
+                                    <i className="fas fa-dumbbell"></i>
+                                </div>
+                                <h3>Meu Plano de Treino</h3>
+                            </div>
+                            <div className="module-info">
+                                <div className="info-item">
+                                    <span className="info-label">Objetivo</span>
+                                    <span className="info-value">{perfilData?.objetivo || 'Não configurado'}</span>
+                                </div>
+                                <div className="info-item">
+                                    <span className="info-label">Frequência</span>
+                                    <span className="info-value">{perfilData?.frequenciaSemanal || '4x por semana'}</span>
+                                </div>
+                            </div>
                             <button 
                               className="btn-module-access"
-                              onClick={() => navigate('/treino')}
+                              onClick={() => navigate('cliente/treino')}
                             >
-                              Acessar Meu Treino
-                            </button>
-                        </div>
-
-                        {/* MÓDULO: ACOMPANHAMENTO DA DIETA */}
-                        <div className="module-card">
-                            <h3><i className="fas fa-utensils"></i> Minha Dieta</h3>
-                            <p>Tipo de Dieta: <strong>{perfilData?.objetivo === 'emagrecimento' ? '📉 Hipocalórica' : perfilData?.objetivo === 'ganho' ? '📈 Hipercalórica' : perfilData?.objetivo ? '⚖️ Balanceada' : '⚠️ Não configurada'}</strong></p>
-                            <p>Meta Calórica: <strong>{perfilData?.metaCalorica || '2000 kcal'}</strong></p>
-                            <button 
-                              className="btn-module-access secondary"
-                              onClick={() => navigate('/dieta')}
-                            >
-                              Acessar Minha Dieta
+                              Ver Meu Treino
                             </button>
                         </div>
 
                         {/* MÓDULO: COMUNICAÇÃO COM O CONSULTOR */}
-                        <div className="module-card">
-                            <h3><i className="fas fa-comments"></i> Falar com o Consultor</h3>
-                            <p>Horário de Atendimento: <strong>{perfilData?.horarioAtendimento || 'Seg-Sex 09:00 - 18:00'}</strong></p>
-                            <p>Último Contato: <strong>Hoje</strong></p>
+                        <div className="module-card contact-module">
+                            <div className="module-header">
+                                <div className="module-icon">
+                                    <i className="fas fa-comments"></i>
+                                </div>
+                                <h3>Contato com Consultor</h3>
+                            </div>
+                            <div className="module-info">
+                                <div className="info-item">
+                                    <span className="info-label">Atendimento</span>
+                                    <span className="info-value">Seg-Sex 09:00 - 18:00</span>
+                                </div>
+                                <div className="info-item">
+                                    <span className="info-label">Via</span>
+                                    <span className="info-value">WhatsApp</span>
+                                </div>
+                            </div>
                             <button 
                               className="btn-module-access primary"
                               onClick={() => {
@@ -301,31 +334,53 @@ export default function ClienteDashboard() {
                                 window.open(`https://wa.me/?text=${mensagem}`, '_blank')
                               }}
                             >
-                              Enviar Mensagem via WhatsApp
+                              Enviar Mensagem
                             </button>
                         </div>
                     </div>
                     
                     {/* -------------------- AÇÕES RÁPIDAS -------------------- */}
                     <div className="quick-access-section">
-                        <h2><i className="fas fa-running"></i> Ações Rápidas</h2>
+                        <h2>Ações Rápidas</h2>
                         <div className="quick-action-cards">
                             <button 
-                              className="quick-card"
-                              onClick={() => navigate('/progresso')}
+                              className="quick-card training-card"
+                              onClick={() => navigate('/cliente/treino')}
                             >
-                                <i className="fas fa-chart-line"></i>
-                                <span>Registrar Progresso</span>
+                                <div className="quick-card-icon">
+                                    <i className="fas fa-dumbbell"></i>
+                                </div>
+                                <span>Meu Treino</span>
                             </button>
                             <button 
-                              className="quick-card"
-                              onClick={() => navigate('/configuracoes')}
+                              className="quick-card progress-card"
+                              onClick={() => navigate('/cliente/progresso')}
                             >
-                                <i className="fas fa-calendar-alt"></i>
+                                <div className="quick-card-icon">
+                                    <i className="fas fa-chart-line"></i>
+                                </div>
+                                <span>Progresso</span>
+                            </button>
+                            <button 
+                              className="quick-card consultant-card"
+                              onClick={() => navigate('/cliente/consultor')}
+                            >
+                                <div className="quick-card-icon">
+                                    <i className="fas fa-comments"></i>
+                                </div>
+                                <span>Consultor</span>
+                            </button>
+                            <button 
+                              className="quick-card settings-card"
+                              onClick={() => navigate('/cliente/configuracoes')}
+                            >
+                                <div className="quick-card-icon">
+                                    <i className="fas fa-cog"></i>
+                                </div>
                                 <span>Configurações</span>
                             </button>
                             <button 
-                              className="quick-card logout-btn"
+                              className="quick-card logout-card"
                               onClick={() => {
                                 localStorage.removeItem('jwt_token');
                                 localStorage.removeItem('user_role');
@@ -334,8 +389,10 @@ export default function ClienteDashboard() {
                                 navigate('/login');
                             }}
                             >
-                                <i className="fas fa-sign-out-alt"></i>
-                                <span>Sair da Conta</span>
+                                <div className="quick-card-icon">
+                                    <i className="fas fa-sign-out-alt"></i>
+                                </div>
+                                <span>Sair</span>
                             </button>
                         </div>
                     </div>

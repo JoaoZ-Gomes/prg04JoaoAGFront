@@ -113,3 +113,54 @@
 .chat-input button:hover {
   background-color: #0056b3;
 }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin: 20px 0;
+}
+
+.tab-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.tab-btn.active {
+  background: #007bff;
+  color: #fff;
+  border-color: #0062cc;
+}
+
+.tab-content {
+  margin-top: 12px;
+}
+
+.historico ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hist-item {
+  padding: 12px;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.hist-meta {
+  font-size: 13px;
+  color: #666;
+  margin-top: 6px;
+}
+
+.info p {
+  margin: 6px 0;
+}

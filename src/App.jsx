@@ -9,12 +9,10 @@ import ConsultantDashboard from './pages/ConsultantDashboard/ConsultantDashboard
 import TrainingCreator from './pages/TrainingCreator/TrainingCreator'
 import ClienteDashboard from './pages/ClienteDashboard/ClienteDashboard'
 import UserWorkouts from './pages/UserWorkouts/UserWorkouts'
-import Dieta from './pages/Dieta/Dieta'
 import Progresso from './pages/Progresso/Progresso'
-import Consultor from './pages/Consultor/Consultor'
+// Consultor page removed from client navigation
 import Configuracoes from './pages/Configuracoes/Configuracoes'
 import Exercicios from './pages/Exercicios/Exercicios'
-import Feedback from './pages/Feedback/Feedback'
 import './App.css'
 
 function AppContent() {
@@ -37,12 +35,9 @@ function AppContent() {
           <Route path="/consultor/dashboard" element={<ConsultantDashboard />} />
           <Route path="/consultor/criar-treino" element={<TrainingCreator />} />
           <Route path="/consultor/exercicios" element={<Exercicios />} />
-          <Route path="/consultor/feedback" element={<Feedback />} />
           <Route path="/cliente/dashboard" element={<ClienteDashboard />} />
           <Route path="/cliente/treino" element={<UserWorkouts />} />
-          <Route path="/cliente/dieta" element={<Dieta />} />
           <Route path="/cliente/progresso" element={<Progresso />} />
-          <Route path="/cliente/consultor" element={<Consultor />} />
           <Route path="/cliente/configuracoes" element={<Configuracoes />} />
         </Routes>
       </main>
