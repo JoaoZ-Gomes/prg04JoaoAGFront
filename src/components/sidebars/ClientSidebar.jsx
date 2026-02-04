@@ -37,6 +37,7 @@ export default function ClientSidebar() {
                     <li>
                         <NavLink 
                             to="/cliente/dashboard" 
+                            end
                             className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}
                             onClick={closeSidebar}
                         >
@@ -46,6 +47,7 @@ export default function ClientSidebar() {
                     <li>
                         <NavLink 
                             to="/cliente/treino" 
+                            end
                             className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}
                             onClick={closeSidebar}
                         >
@@ -56,6 +58,7 @@ export default function ClientSidebar() {
                     <li>
                         <NavLink 
                             to="/cliente/progresso" 
+                            end
                             className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}
                             onClick={closeSidebar}
                         >
@@ -66,6 +69,7 @@ export default function ClientSidebar() {
                     <li>
                         <NavLink 
                             to="/cliente/configuracoes" 
+                            end
                             className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}
                             onClick={closeSidebar}
                         >

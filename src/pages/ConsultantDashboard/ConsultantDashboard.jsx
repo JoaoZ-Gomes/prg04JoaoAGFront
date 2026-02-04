@@ -72,6 +72,7 @@ export default function ConsultantDashboard() {
     const buscarDados = async () => {
       try {
         const data = await consultorService.buscarMeusClientes()
+        console.log('Clientes carregados:', data)
         setClients(data || [])
       } catch (err) {
         console.error('Erro ao buscar clientes:', err)

@@ -81,14 +81,18 @@ export default function ClienteDashboard() {
                 setObjetivosError(null)
                 const objs = await buscarTodosObjetivos(0, 1000)
                 const listaObjs = Array.isArray(objs) ? objs : objs.content || objs
+                console.log('Objetivos carregados:', listaObjs)
                 setObjetivosDisponiveis(listaObjs)
 
                 const fichas = await buscarTodasFichasSemPaginacao()
                 const listaFichas = Array.isArray(fichas) ? fichas : fichas
+                console.log('Fichas carregadas:', listaFichas)
                 const minhaFicha = listaFichas.find(f => f.clienteId === perfilData.id)
+                console.log('Minha ficha encontrada:', minhaFicha)
                 if (minhaFicha) {
                     setFicha(minhaFicha)
                     setSelectedObjetivo(minhaFicha.objetivo || null)
+                    console.log('Objetivo selecionado:', minhaFicha.objetivo)
                 }
             } catch (e) {
                 console.error('Erro ao carregar objetivos/fichas:', e)
@@ -246,8 +250,12 @@ export default function ClienteDashboard() {
                                                     <button className="btn-selector-save" onClick={async () => {
                                                             try {
                                                                 if (ficha && ficha.id) {
-                                                                    // Salvamos o ENUM (tipo) na propriedade objetivo da ficha
-                                                                    await atualizarFicha(ficha.id, { id: ficha.id, nome: ficha.nome || 'Minha Ficha', objetivo: selectedObjetivo })
+                                                                    // Enviamos id, nome e objetivo no body
+                                                                    await atualizarFicha(ficha.id, { 
+                                                                        id: ficha.id,
+                                                                        nome: ficha.nome || 'Minha Ficha', 
+                                                                        objetivo: selectedObjetivo 
+                                                                    })
                                                                     setSuccessMessage('Objetivo atualizado com sucesso')
                                                                     // atualizar localmente
                                                                     setFicha(prev => ({ ...prev, objetivo: selectedObjetivo }))
@@ -293,7 +301,7 @@ export default function ClienteDashboard() {
                             <div className="module-info">
                                 <div className="info-item">
                                     <span className="info-label">Objetivo</span>
-                                    <span className="info-value">{perfilData?.objetivo || 'Não configurado'}</span>
+                                    <span className="info-value">{ficha?.objetivo || selectedObjetivo || perfilData?.objetivo || 'Não configurado'}</span>
                                 </div>
                                 <div className="info-item">
                                     <span className="info-label">Frequência</span>

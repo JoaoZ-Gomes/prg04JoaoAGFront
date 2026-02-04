@@ -70,10 +70,13 @@ export const buscarFichaPorId = async (id) => {
  */
 export const atualizarFicha = async (id, fichaData) => {
   try {
-    return await apiPut(`/fichas/${id}`, fichaData);
+    console.log(`Atualizando ficha ${id} com dados:`, fichaData)
+    const response = await apiPut(`/fichas/${id}`, fichaData)
+    console.log(`Resposta da atualização de ficha ${id}:`, response)
+    return response
   } catch (error) {
-    console.error(`Erro ao atualizar ficha ${id}:`, error);
-    throw error;
+    console.error(`Erro ao atualizar ficha ${id}:`, error)
+    throw error
   }
 };
 
