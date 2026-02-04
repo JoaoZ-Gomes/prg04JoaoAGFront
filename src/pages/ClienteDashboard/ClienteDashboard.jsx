@@ -363,7 +363,11 @@ export default function ClienteDashboard() {
                             </button>
                             <button 
                               className="quick-card consultant-card"
-                              onClick={() => navigate('/cliente/consultor')}
+                              onClick={() => {
+                                const numeroConsultor = '5575921792320'
+                                const mensagem = encodeURIComponent('Olá, gostaria de falar com meu consultor!')
+                                window.open(`https://wa.me/?text=${mensagem}`, '_blank')
+                              }}
                             >
                                 <div className="quick-card-icon">
                                     <i className="fas fa-comments"></i>
